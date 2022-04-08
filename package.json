@@ -2,9 +2,12 @@
   "name": "symfony5_proyecto_integrado",
   "packageManager": "yarn@3.2.0",
   "devDependencies": {
-    "@hotwired/stimulus": "^3.0.0",
-    "@symfony/stimulus-bridge": "^3.0.0",
-    "@symfony/webpack-encore": "^1.7.0",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.16.11",
+    "@symfony/webpack-encore": "^1.8.2",
     "core-js": "^3.0.0",
     "regenerator-runtime": "^0.13.2",
     "webpack-notifier": "^1.6.0"
@@ -16,5 +19,8 @@
     "dev": "encore dev",
     "watch": "encore dev --watch",
     "build": "encore production --progress"
+  },
+  "dependencies": {
+    "tapable": "^2.2.1"
   }
 }
