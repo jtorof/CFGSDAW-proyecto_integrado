@@ -1385,6 +1385,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@popperjs/core@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@popperjs/core@npm:2.6.0"
+  checksum: 87a12a57892412f40476dcf2eb158a17ba267266a6f04e7b8cc1bcfd3ea1e2e8e4c6b6d9a991b62c1075454b2800decd380a39e401f9db89ef5f0c19e5ab354d
+  languageName: node
+  linkType: hard
+
 "@symfony/webpack-encore@npm:^1.8.2":
   version: 1.8.2
   resolution: "@symfony/webpack-encore@npm:1.8.2"
@@ -2472,6 +2479,13 @@ __metadata:
     kind-of: ^6.0.2
     shallow-clone: ^3.0.0
   checksum: 770f912fe4e6f21873c8e8fbb1e99134db3b93da32df271d00589ea4a29dbe83a9808a322c93f3bcaf8584b8b4fa6fc269fc8032efbaa6728e0c9886c74467d2
+  languageName: node
+  linkType: hard
+
+"clsx@npm:1.1.1":
+  version: 1.1.1
+  resolution: "clsx@npm:1.1.1"
+  checksum: ff052650329773b9b245177305fc4c4dc3129f7b2be84af4f58dc5defa99538c61d4207be7419405a5f8f3d92007c954f4daba5a7b74e563d5de71c28c830063
   languageName: node
   linkType: hard
 
@@ -4250,7 +4264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -4298,6 +4312,22 @@ __metadata:
     socks-proxy-agent: ^6.1.1
     ssri: ^9.0.0
   checksum: 42825d119a7e4f5b1a8e7048a86d328cd36bb1ff875d155ce7079d9a0afdd310c198fb310096af358cfa9ecdf643cecf960380686792457dccb36e17efe89eb0
+  languageName: node
+  linkType: hard
+
+"mdb-react-ui-kit@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "mdb-react-ui-kit@npm:3.0.0"
+  dependencies:
+    "@popperjs/core": 2.6.0
+    clsx: 1.1.1
+    react-popper: 2.2.4
+  peerDependencies:
+    "@types/react": ^17.0.0
+    "@types/react-dom": ^17.0.0
+    react: ^17.0.0
+    react-dom: ^17.0.0
+  checksum: 012e84633a86e5aa5abc35d83108412add553e1b3012e9c6e5ad072770425ef62a58146a9c1cc927cf2b6fb3df8226e259c2d28d41b68cefc3f7096d9ad06764
   languageName: node
   linkType: hard
 
@@ -5439,19 +5469,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.0.0":
-  version: 18.0.0
-  resolution: "react-dom@npm:18.0.0"
+"react-dom@npm:17.0.2":
+  version: 17.0.2
+  resolution: "react-dom@npm:17.0.2"
   dependencies:
     loose-envify: ^1.1.0
-    scheduler: ^0.21.0
+    object-assign: ^4.1.1
+    scheduler: ^0.20.2
   peerDependencies:
-    react: ^18.0.0
-  checksum: dd0ba9f2f31dd728076c892a95b2f5a8dfe79136431b0289afb46eec39d0ca6b6f0f40a60fd8aa6ef702c98ce7c26100d3d4dbc35c7c9e87429cd04f84cb58bd
+    react: 17.0.2
+  checksum: 1c1eaa3bca7c7228d24b70932e3d7c99e70d1d04e13bb0843bbf321582bc25d7961d6b8a6978a58a598af2af496d1cedcfb1bf65f6b0960a0a8161cb8dab743c
   languageName: node
   linkType: hard
 
-"react-fast-compare@npm:^3.1.1":
+"react-fast-compare@npm:^3.0.1, react-fast-compare@npm:^3.1.1":
   version: 3.2.0
   resolution: "react-fast-compare@npm:3.2.0"
   checksum: 8ef272c825ae329f61633ce4ce7f15aa5b84e5214d88bc0823880236e03e985a13195befa2c7a4eda7db3b017dc7985729152d88445823f652403cf36c2b86aa
@@ -5488,6 +5519,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-popper@npm:2.2.4":
+  version: 2.2.4
+  resolution: "react-popper@npm:2.2.4"
+  dependencies:
+    react-fast-compare: ^3.0.1
+    warning: ^4.0.2
+  peerDependencies:
+    "@popperjs/core": ^2.0.0
+    react: ^16.8.0 || ^17
+  checksum: 02cdce8d815ab005905562ff4705bbc84a3e4bf7558d026051f8d459f30dc1506efeafec83ebd3e52a623e9da1f6b946270d2854774f66bbe0037a2507f02972
+  languageName: node
+  linkType: hard
+
 "react-router-dom@npm:6":
   version: 6.3.0
   resolution: "react-router-dom@npm:6.3.0"
@@ -5521,12 +5565,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.0.0":
-  version: 18.0.0
-  resolution: "react@npm:18.0.0"
+"react@npm:17.0.2":
+  version: 17.0.2
+  resolution: "react@npm:17.0.2"
   dependencies:
     loose-envify: ^1.1.0
-  checksum: 293020b96536b3c7113ee57ca5c990a3f25649d1751b1c7a3aabd16dff0691fe9f1eed1206616d0906d05933536052037340a0c8d0941ff870b0eb469a2f975b
+    object-assign: ^4.1.1
+  checksum: b254cc17ce3011788330f7bbf383ab653c6848902d7936a87b09d835d091e3f295f7e9dd1597c6daac5dc80f90e778c8230218ba8ad599f74adcc11e33b9d61b
   languageName: node
   linkType: hard
 
@@ -5813,12 +5858,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "scheduler@npm:0.21.0"
+"scheduler@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "scheduler@npm:0.20.2"
   dependencies:
     loose-envify: ^1.1.0
-  checksum: 4f8285076041ed2c81acdd1faa987f1655fdbd30554bc667c1ea64743fc74fb3a04ca7d27454b3d678735df5a230137a3b84756061b43dc5796e80701b66d124
+    object-assign: ^4.1.1
+  checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
   languageName: node
   linkType: hard
 
@@ -6337,9 +6383,10 @@ __metadata:
     "@babel/preset-react": ^7.0.0
     "@symfony/webpack-encore": ^1.8.2
     core-js: ^3.0.0
+    mdb-react-ui-kit: ^3.0.0
     prop-types: ^15.8.1
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    react: 17.0.2
+    react-dom: 17.0.2
     react-helmet: ^6.1.0
     react-hook-form: ^7.29.0
     react-router-dom: 6
@@ -6584,6 +6631,15 @@ __metadata:
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
   checksum: ae0123222c6df65b437669d63dfa8c36cee20a504101b2fcd97b8bf76f91259c17f9f2b4d70a1e3c6bbcee7f51b28392833adb6b2770b23b01abec84e369660b
+  languageName: node
+  linkType: hard
+
+"warning@npm:^4.0.2":
+  version: 4.0.3
+  resolution: "warning@npm:4.0.3"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: 4f2cb6a9575e4faf71ddad9ad1ae7a00d0a75d24521c193fa464f30e6b04027bd97aa5d9546b0e13d3a150ab402eda216d59c1d0f2d6ca60124d96cd40dfa35c
   languageName: node
   linkType: hard
 
