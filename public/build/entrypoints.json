@@ -6,6 +6,7 @@
         "/build/app.js"
       ],
       "css": [
+        "/build/vendors-_yarn___virtual___mdb-react-ui-kit-virtual-67c5d3a29d_0_cache_mdb-react-ui-kit-npm-3_-a65f90.css",
         "/build/app.css"
       ]
     }

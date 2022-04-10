@@ -8,7 +8,8 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _styles_app_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/app.css */ "./assets/styles/app.css");
+/* harmony import */ var mdb_react_ui_kit_dist_css_mdb_min_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mdb-react-ui-kit/dist/css/mdb.min.css */ "./.yarn/__virtual__/mdb-react-ui-kit-virtual-67c5d3a29d/0/cache/mdb-react-ui-kit-npm-3.0.0-55a71a9d72-012e84633a.zip/node_modules/mdb-react-ui-kit/dist/css/mdb.min.css");
+/* harmony import */ var _styles_custom_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/custom.css */ "./assets/styles/custom.css");
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -18,12 +19,25 @@ __webpack_require__.r(__webpack_exports__);
 // any CSS you import will output into a single css file (app.css in this case)
 
 
+
 /***/ }),
 
-/***/ "./assets/styles/app.css":
-/*!*******************************!*\
-  !*** ./assets/styles/app.css ***!
-  \*******************************/
+/***/ "./.yarn/__virtual__/mdb-react-ui-kit-virtual-67c5d3a29d/0/cache/mdb-react-ui-kit-npm-3.0.0-55a71a9d72-012e84633a.zip/node_modules/mdb-react-ui-kit/dist/css/mdb.min.css":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./.yarn/__virtual__/mdb-react-ui-kit-virtual-67c5d3a29d/0/cache/mdb-react-ui-kit-npm-3.0.0-55a71a9d72-012e84633a.zip/node_modules/mdb-react-ui-kit/dist/css/mdb.min.css ***!
+  \*******************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./assets/styles/custom.css":
+/*!**********************************!*\
+  !*** ./assets/styles/custom.css ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -35,7 +49,8 @@ __webpack_require__.r(__webpack_exports__);
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-/******/ var __webpack_exports__ = (__webpack_exec__("./assets/index.js"));
+/******/ __webpack_require__.O(0, ["vendors-_yarn___virtual___mdb-react-ui-kit-virtual-67c5d3a29d_0_cache_mdb-react-ui-kit-npm-3_-a65f90"], () => (__webpack_exec__("./assets/index.js")));
+/******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBRUE7Ozs7Ozs7Ozs7OztBQ1BBIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vc3ltZm9ueTVfcHJveWVjdG9faW50ZWdyYWRvLy4vYXNzZXRzL2luZGV4LmpzIiwid2VicGFjazovL3N5bWZvbnk1X3Byb3llY3RvX2ludGVncmFkby8uL2Fzc2V0cy9zdHlsZXMvYXBwLmNzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIvKlxyXG4gKiBXZWxjb21lIHRvIHlvdXIgYXBwJ3MgbWFpbiBKYXZhU2NyaXB0IGZpbGUhXHJcbiAqXHJcbiAqIFdlIHJlY29tbWVuZCBpbmNsdWRpbmcgdGhlIGJ1aWx0IHZlcnNpb24gb2YgdGhpcyBKYXZhU2NyaXB0IGZpbGVcclxuICogKGFuZCBpdHMgQ1NTIGZpbGUpIGluIHlvdXIgYmFzZSBsYXlvdXQgKGJhc2UuaHRtbC50d2lnKS5cclxuICovXHJcblxyXG4vLyBhbnkgQ1NTIHlvdSBpbXBvcnQgd2lsbCBvdXRwdXQgaW50byBhIHNpbmdsZSBjc3MgZmlsZSAoYXBwLmNzcyBpbiB0aGlzIGNhc2UpXHJcbmltcG9ydCAnLi9zdHlsZXMvYXBwLmNzcyc7IiwiLy8gZXh0cmFjdGVkIGJ5IG1pbmktY3NzLWV4dHJhY3QtcGx1Z2luXG5leHBvcnQge307Il0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7OztBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUVBO0FBQ0E7Ozs7Ozs7Ozs7OztBQ1JBOzs7Ozs7Ozs7Ozs7QUNBQSIsInNvdXJjZXMiOlsid2VicGFjazovL3N5bWZvbnk1X3Byb3llY3RvX2ludGVncmFkby8uL2Fzc2V0cy9pbmRleC5qcyIsIndlYnBhY2s6Ly9zeW1mb255NV9wcm95ZWN0b19pbnRlZ3JhZG8vLi8ueWFybi9fX3ZpcnR1YWxfXy9tZGItcmVhY3QtdWkta2l0LXZpcnR1YWwtNjdjNWQzYTI5ZC8wL2NhY2hlL21kYi1yZWFjdC11aS1raXQtbnBtLTMuMC4wLTU1YTcxYTlkNzItMDEyZTg0NjMzYS56aXAvbm9kZV9tb2R1bGVzL21kYi1yZWFjdC11aS1raXQvZGlzdC9jc3MvbWRiLm1pbi5jc3MiLCJ3ZWJwYWNrOi8vc3ltZm9ueTVfcHJveWVjdG9faW50ZWdyYWRvLy4vYXNzZXRzL3N0eWxlcy9jdXN0b20uY3NzIl0sInNvdXJjZXNDb250ZW50IjpbIi8qXHJcbiAqIFdlbGNvbWUgdG8geW91ciBhcHAncyBtYWluIEphdmFTY3JpcHQgZmlsZSFcclxuICpcclxuICogV2UgcmVjb21tZW5kIGluY2x1ZGluZyB0aGUgYnVpbHQgdmVyc2lvbiBvZiB0aGlzIEphdmFTY3JpcHQgZmlsZVxyXG4gKiAoYW5kIGl0cyBDU1MgZmlsZSkgaW4geW91ciBiYXNlIGxheW91dCAoYmFzZS5odG1sLnR3aWcpLlxyXG4gKi9cclxuXHJcbi8vIGFueSBDU1MgeW91IGltcG9ydCB3aWxsIG91dHB1dCBpbnRvIGEgc2luZ2xlIGNzcyBmaWxlIChhcHAuY3NzIGluIHRoaXMgY2FzZSlcclxuaW1wb3J0ICdtZGItcmVhY3QtdWkta2l0L2Rpc3QvY3NzL21kYi5taW4uY3NzJztcclxuaW1wb3J0ICcuL3N0eWxlcy9jdXN0b20uY3NzJzsiLCIvLyBleHRyYWN0ZWQgYnkgbWluaS1jc3MtZXh0cmFjdC1wbHVnaW5cbmV4cG9ydCB7fTsiLCIvLyBleHRyYWN0ZWQgYnkgbWluaS1jc3MtZXh0cmFjdC1wbHVnaW5cbmV4cG9ydCB7fTsiXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=
