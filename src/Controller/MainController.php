@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_main')]
+    #[Route('/{reactRouting?}', name: 'app_main', priority: "-1", requirements: ['reactRouting'=>'.+'])]
     public function index(SerializerInterface $serializer): Response
     {
         return $this->render('main/index.html.twig', [
