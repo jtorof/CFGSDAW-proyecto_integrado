@@ -8,11 +8,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/login', name: 'app_login')]
-    public function index(): Response
+    #[Route('/login', name: 'app_login', methods: ['POST'])]
+    public function login(): Response
     {
-        return $this->json([
-            'user' => $this->getUser() ? $this->getUser()->getId() : null]
-        );
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->json([
+                'error' => 'Invalid login request: check that the Content-Type header is "application/json".'
+            ], 400);
+        }
+        
+        return $this->json($this->getUser(), Response::HTTP_OK, [], []);
+    }
+
+    #[Route('/logout', name: 'app_logout')]
+    public function logout(): void
+    {
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

@@ -1,2 +1,8 @@
 {% extends 'base.html.twig' %}
-{% block body %}<div id="app"></div>{% endblock %}
+{% block body %}
+    <script>
+        window.user = '{{ user|raw }}';     //TODO : probably can declare this as const
+        console.log(user);
+    </script>
+    <div id="app"></div>
+{% endblock %}
