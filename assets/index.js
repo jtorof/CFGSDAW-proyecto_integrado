@@ -6,13 +6,14 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import './styles/custom.css';
+//import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import './styles/scss/mdb.free.scss'
+import './styles/custom.css'
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
 
 ReactDOM.render(
     <BrowserRouter>

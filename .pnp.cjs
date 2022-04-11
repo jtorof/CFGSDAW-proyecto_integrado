@@ -48,6 +48,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-hook-form", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:7.29.0"],\
             ["react-router-dom", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:6.3.0"],\
             ["regenerator-runtime", "npm:0.13.9"],\
+            ["sass", "npm:1.50.0"],\
+            ["sass-loader", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:12.6.0"],\
             ["tapable", "npm:2.2.1"],\
             ["webpack-notifier", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:1.15.0"]\
           ],\
@@ -5458,6 +5460,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["immutable", [\
+        ["npm:4.0.0", {\
+          "packageLocation": "./.yarn/cache/immutable-npm-4.0.0-74b844f82e-4b5e9181e4.zip/node_modules/immutable/",\
+          "packageDependencies": [\
+            ["immutable", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["import-local", [\
         ["npm:3.1.0", {\
           "packageLocation": "./.yarn/cache/import-local-npm-3.1.0-8960af5e51-bfcdb63b5e.zip/node_modules/import-local/",\
@@ -5820,6 +5831,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/kind-of-npm-6.0.3-ab15f36220-3ab01e7b1d.zip/node_modules/kind-of/",\
           "packageDependencies": [\
             ["kind-of", "npm:6.0.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["klona", [\
+        ["npm:2.0.5", {\
+          "packageLocation": "./.yarn/cache/klona-npm-2.0.5-5d403f2d77-8c976126ea.zip/node_modules/klona/",\
+          "packageDependencies": [\
+            ["klona", "npm:2.0.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8145,6 +8165,58 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["sass", [\
+        ["npm:1.50.0", {\
+          "packageLocation": "./.yarn/cache/sass-npm-1.50.0-80262d33a1-43738cc83a.zip/node_modules/sass/",\
+          "packageDependencies": [\
+            ["sass", "npm:1.50.0"],\
+            ["chokidar", "npm:3.5.3"],\
+            ["immutable", "npm:4.0.0"],\
+            ["source-map-js", "npm:1.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["sass-loader", [\
+        ["npm:12.6.0", {\
+          "packageLocation": "./.yarn/cache/sass-loader-npm-12.6.0-19096ee50d-5d73a42858.zip/node_modules/sass-loader/",\
+          "packageDependencies": [\
+            ["sass-loader", "npm:12.6.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:12.6.0", {\
+          "packageLocation": "./.yarn/__virtual__/sass-loader-virtual-f78e434f6a/0/cache/sass-loader-npm-12.6.0-19096ee50d-5d73a42858.zip/node_modules/sass-loader/",\
+          "packageDependencies": [\
+            ["sass-loader", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:12.6.0"],\
+            ["@types/fibers", null],\
+            ["@types/node-sass", null],\
+            ["@types/sass", null],\
+            ["@types/sass-embedded", null],\
+            ["@types/webpack", null],\
+            ["fibers", null],\
+            ["klona", "npm:2.0.5"],\
+            ["neo-async", "npm:2.6.2"],\
+            ["node-sass", null],\
+            ["sass", "npm:1.50.0"],\
+            ["sass-embedded", null],\
+            ["webpack", null]\
+          ],\
+          "packagePeers": [\
+            "@types/fibers",\
+            "@types/node-sass",\
+            "@types/sass-embedded",\
+            "@types/sass",\
+            "@types/webpack",\
+            "fibers",\
+            "node-sass",\
+            "sass-embedded",\
+            "sass",\
+            "webpack"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["scheduler", [\
         ["npm:0.20.2", {\
           "packageLocation": "./.yarn/cache/scheduler-npm-0.20.2-90beaecfba-c4b35cf967.zip/node_modules/scheduler/",\
@@ -8742,6 +8814,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-hook-form", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:7.29.0"],\
             ["react-router-dom", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:6.3.0"],\
             ["regenerator-runtime", "npm:0.13.9"],\
+            ["sass", "npm:1.50.0"],\
+            ["sass-loader", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:12.6.0"],\
             ["tapable", "npm:2.2.1"],\
             ["webpack-notifier", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:1.15.0"]\
           ],\
