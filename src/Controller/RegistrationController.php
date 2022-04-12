@@ -17,8 +17,9 @@ class RegistrationController extends AbstractController
     {
         try {
             $data = json_decode($request->getContent(), true);
+            //file_put_contents('SOMELOG.LOG', print_r($data, true).PHP_EOL, FILE_APPEND);
             $email = $data['email']; 
-            $password = $data['password'];
+            $password = $data['password1'];
             
             $user = new User();
             $user->setEmail($email);
@@ -29,8 +30,9 @@ class RegistrationController extends AbstractController
                     )
                 );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            // Commented cause testing things
+            // $entityManager->persist($user);
+            // $entityManager->flush();
 
             $message = 'Account successfully created';
         } catch (\Exception $e) {

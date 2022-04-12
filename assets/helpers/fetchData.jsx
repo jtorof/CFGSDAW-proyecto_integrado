@@ -8,11 +8,11 @@ const fetchData = async (resource = '', method = 'GET', headers = {}, data = {})
   }
 
   if (Object.keys(data).length !== 0) {
-    init.data = data;
+    init.body = JSON.stringify(data);
   }
 
   try {
-    console.log(init);
+    //console.log(init);
     const response = await fetch(resource, init); 
     const data = await response.json(); 
     return data;
