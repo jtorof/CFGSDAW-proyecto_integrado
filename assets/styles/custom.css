@@ -1,3 +1,34 @@
 body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 10;
+}
+
+/* #app>*>* {
+    padding-left: 10px;
+    padding-right: 10px;
+} */
+
+main {
+    flex-grow: 10;
+}
+
+.valid-feedback {
+    display: none !important;
+}
+
+.is-valid~.custom-valid-feedback {
+    display: block !important;
+}
+
+.is-valid input.form-control {
+    margin-bottom: 1rem !important;
+    border-color: #00b74a !important;
 }

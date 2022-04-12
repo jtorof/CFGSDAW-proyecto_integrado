@@ -1,1 +1,17 @@
 // Your custom styles
+.is-valid input.form-control {
+    margin-bottom: 1rem !important;
+    border-color: #00b74a !important;
+}
+
+@mixin form-validation-state-selector($state) {
+    @if ($state == 'valid' and $state == 'invalid') {
+        #{if(&, "&", "")}.is-#{$state} {
+            @content;
+          }
+    } @else {
+      #{if(&, "&", "")}.is-#{$state} {
+        @content;
+      }
+    }
+  }
