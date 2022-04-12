@@ -28,7 +28,7 @@ main {
     display: block !important;
 }
 
-.is-valid input.form-control {
-    margin-bottom: 1rem !important;
+/* .is-valid input.form-control {
+    margin-bottom: 5rem !important;
     border-color: #00b74a !important;
-}
+} */

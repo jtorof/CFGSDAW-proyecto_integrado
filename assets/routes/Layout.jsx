@@ -1,12 +1,17 @@
-import React from 'react'
+import React from 'react';
 import { Outlet } from "react-router-dom";
 import Navigation from '../components/Navigation';
+import { MDBContainer } from 'mdb-react-ui-kit';
 
-const Layout = ( {showBreadcrumbs} ) => {
+const Layout = ({ showBreadcrumbs }) => {
   return (
     <>
-      <Navigation showBreadcrumbs={showBreadcrumbs}/>
-      <main><Outlet /></main>
+      <header>
+        <Navigation showBreadcrumbs={showBreadcrumbs} />
+      </header>
+      <main>
+        <Outlet />
+      </main>
       <footer>FOOTER</footer>
     </>
   )

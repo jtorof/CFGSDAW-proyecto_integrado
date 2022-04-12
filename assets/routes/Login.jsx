@@ -1,8 +1,12 @@
-import React from 'react'
+import React from 'react';
+import LoginForm from '../components/LoginForm';
+import TestForm from '../components/TestForm';
 
 const Login = () => {
   return (
-    <div>Login</div>
+    <>      
+      <TestForm />
+    </>
   )
 }
 

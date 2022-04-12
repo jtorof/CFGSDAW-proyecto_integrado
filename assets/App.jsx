@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AdminLayout from './routes/AdminLayout';
 import Documentation from './routes/Documentation';

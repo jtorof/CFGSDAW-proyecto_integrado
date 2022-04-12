@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
@@ -19,8 +19,8 @@ const Navigation = ({ showBreadcrumbs }) => {
 
   return (
     <>
-      <MDBNavbar expand='lg' dark bgColor='dark'>
-        <MDBContainer fluid>
+      <MDBNavbar expand='md' dark bgColor='dark'>
+        {/* <MDBContainer fluid> */}
           <MDBNavbarBrand href='#'>LOGO</MDBNavbarBrand>
           <MDBNavbarToggler
             aria-controls='navbarSupportedContent'
@@ -32,7 +32,7 @@ const Navigation = ({ showBreadcrumbs }) => {
           </MDBNavbarToggler>
 
           <MDBCollapse navbar show={showBasic}>
-            <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>
+            <MDBNavbarNav right fullWidth={false}>
               <MDBNavbarItem>
                 <MDBNavbarLink tag={Link} to='/'>
                   Home
@@ -55,10 +55,16 @@ const Navigation = ({ showBreadcrumbs }) => {
               </MDBNavbarItem>
             </MDBNavbarNav>
           </MDBCollapse>
-        </MDBContainer>
+       {/*  </MDBContainer> */}
       </MDBNavbar>
       <MDBRow>
-        {showBreadcrumbs ? <Breadcrumbs /> : null }        
+        <div className='p-4 text-center bg-light d-none d-md-block'>
+          <h1 className='mb-3'>Heading</h1>
+          <h4 className='mb-3'>Subheading</h4>
+        </div>
+      </MDBRow>
+      <MDBRow className='bg-light'>
+        {showBreadcrumbs ? <Breadcrumbs /> : null}
       </MDBRow>
     </>
   )

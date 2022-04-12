@@ -7,10 +7,10 @@
     #{if(&, "&", "")}.is-#{$state} {
       @content;
     }
-    /* .was-validated #{if(&, "&", "")}:#{$state},
-    #{if(&, "&", "")}.is-#{$state} {
-      @content;
-    } */
+    // .was-validated #{if(&, "&", "")}:#{$state},
+    // #{if(&, "&", "")}.is-#{$state} {
+    //   @content;
+    // }
   } @else {
     #{if(&, "&", "")}.is-#{$state} {
       @content;

@@ -10,6 +10,7 @@ import routesNamesMap from '../helpers/routes'
 const Breadcrumbs = () => {
   let location = useLocation();
   const [rawCrumbs, setRawCrumbs] = useState([]);
+  const [showBreadcrumbs, setShowBreadcrumbs] = useState(true);
   let url = "";
 
   const prepareCrumbs = () => {
@@ -33,7 +34,8 @@ const Breadcrumbs = () => {
       if (prettyCrumb) {
         content = prettyCrumb;
       } else {
-        content = <Link to={url}>{crumb}</Link>;
+        //content = <Link to={url}>{crumb}</Link>;
+        content = crumb;
       }
     }
     return <MDBBreadcrumbItem key={index}>
@@ -43,14 +45,18 @@ const Breadcrumbs = () => {
 
   useEffect(() => {
     setRawCrumbs([]);
-    prepareCrumbs();
-  }, [location])
+    
+    if (location.pathname === "/") {
+      setShowBreadcrumbs(false);
+    } else {
+      setShowBreadcrumbs(true);
+      prepareCrumbs();
+    }
+  }, [location]);
 
 
   return (
-    <MDBBreadcrumb>
-      {generatedCrumbs}
-    </MDBBreadcrumb>
+    showBreadcrumbs ? <MDBBreadcrumb aria-label="breadcrumb">Breadcrumb:{'\u00A0'}{generatedCrumbs}</MDBBreadcrumb> : null
   )
 }
 
