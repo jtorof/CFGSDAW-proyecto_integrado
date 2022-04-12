@@ -24,12 +24,13 @@
     "build": "encore production --progress"
   },
   "dependencies": {
+    "formik": "^2.2.9",
     "mdb-react-ui-kit": "^3.0.0",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "^7.29.0",
-    "react-router-dom": "6"
+    "react-router-dom": "6",
+    "yup": "^0.32.11"
   }
 }
