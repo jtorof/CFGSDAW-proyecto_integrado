@@ -17,7 +17,7 @@ class SecurityController extends AbstractController
             ], 400);
         }
         
-        return $this->json($this->getUser(), Response::HTTP_OK, [], []);
+        return $this->json($this->getUser(), Response::HTTP_OK, [], ['groups' => 'userInfo']);
     }
 
     #[Route('/logout', name: 'app_logout')]
