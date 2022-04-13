@@ -4155,6 +4155,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-cookie@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "js-cookie@npm:2.2.1"
+  checksum: 9b1fb980a1c5e624fd4b28ea4867bb30c71e04c4484bb3a42766344c533faa684de9498e443425479ec68609e96e27b60614bfe354877c449c631529b6d932f2
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -5544,6 +5551,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-cookie-consent@npm:^7.4.1":
+  version: 7.4.1
+  resolution: "react-cookie-consent@npm:7.4.1"
+  dependencies:
+    js-cookie: ^2.2.1
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0
+  checksum: 05ab24f7e028da89160baa51c1c2eb62156a98c8e0b55d6548fc95aba8a7e325b06637c1aa1a974b9456f2f1316082dda73ac3b6448fd79ac4cccecda195e4ed
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
@@ -6498,6 +6517,7 @@ __metadata:
     mdb-react-ui-kit: ^3.0.0
     prop-types: ^15.8.1
     react: 17.0.2
+    react-cookie-consent: ^7.4.1
     react-dom: 17.0.2
     react-helmet: ^6.1.0
     react-router-dom: 6
