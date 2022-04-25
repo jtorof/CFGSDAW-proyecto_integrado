@@ -15,17 +15,19 @@ const Layout = ({ showBreadcrumbs }) => {
       </main>
       <footer>FOOTER</footer>
       <CookieConsent
-        containerClasses='alert alert-primary d-flex align-items-center justify-content-between'
-        buttonText={<MDBBtn
+        containerClasses='alert alert-primary d-flex align-items-center justify-content-center fixed-bottom mb-0'
+        buttonText={
+        <MDBBtn
           tag='div'
         >
           Acepto
         </MDBBtn>}
         type="submit"
         disableStyles
+        contentClasses='me-3'
         debug={true}
       >
-        This website uses cookies to enhance the user experience.
+        Este sitio usa cookies y tal.
       </CookieConsent>
     </>
   )

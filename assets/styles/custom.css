@@ -1,6 +1,6 @@
 body {
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
 }
@@ -32,3 +32,7 @@ main {
     margin-bottom: 5rem !important;
     border-color: #00b74a !important;
 } */
+
+#rcc-confirm-button {
+    all: unset
+}
