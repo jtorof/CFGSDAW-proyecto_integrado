@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import AdminLayout from './routes/AdminLayout';
 import Documentation from './routes/Documentation';
 import Home from './routes/Home';
@@ -7,25 +7,42 @@ import Layout from './routes/Layout';
 import Login from './routes/Login';
 import NotFound from './routes/NotFound';
 import SignUp from './routes/SignUp';
+import Profile from './routes/Profile';
+import { UserContext } from './helpers/context';
+import AccessRestricted from './routes/AccessRestricted';
 
 const App = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout showBreadcrumbs={true} />}>
-        <Route index element={<Home />} />
-        <Route path="docs" element={<Documentation />} />
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="login/login/login" element={<Login />} />
-        <Route path="login/:loginId" element={<Login />} />
-      </Route>
-      <Route path="admin" element={<AdminLayout />} >
+  const [globalUser, setGlobalUser] = useState({});
 
-      </Route>
-      <Route path="*" element={<Layout showBreadcrumbs={false} />} >
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+  useEffect(() => {
+    if (window.user) {
+      console.log(window.user);
+      setGlobalUser(window.user);
+    }
+  }, []);
+
+
+  return (
+    <UserContext.Provider value={{ globalUser, setGlobalUser }}>
+      <Routes>
+        <Route path="/" element={<Layout showBreadcrumbs={true} />}>
+          <Route index element={<Home />} />
+          <Route path="docs" element={<Documentation />} />
+          <Route path="login" element={!("email" in globalUser) ? <Login /> : <Navigate to="/profile" replace/>} />
+          <Route path="signup" element={!("email" in globalUser) ? <SignUp /> : <Navigate to="/profile" replace/>} />
+          <Route path="login/login/login" element={<Login />} />
+          <Route path="login/:loginId" element={<Login />} />
+          <Route path="profile" element={"email" in globalUser ? <Profile /> : <Navigate to="/acceso-restringido" replace/> } />
+        </Route>
+        <Route path="admin" element={<AdminLayout />} >
+
+        </Route>
+        <Route path="*" element={<Layout showBreadcrumbs={false} />} >
+          <Route path="acceso-restringido" element={<AccessRestricted />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </UserContext.Provider>
   )
 }
 

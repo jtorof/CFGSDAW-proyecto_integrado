@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -11,7 +12,9 @@ import {
   MDBValidation,
   MDBValidationItem,
 } from 'mdb-react-ui-kit';
+import Alert from 'react-bootstrap/Alert';
 import fetchData from '../helpers/fetchData';
+import { UserContext } from '../helpers/context';
 
 const validationSchema = yup.object({
   email: yup
@@ -28,7 +31,11 @@ const loginHeaders = {
   'Content-Type': 'application/json',
 }
 
+const customValidFeedback = `Parece correcto`;
+
 const LoginForm = () => {
+  const context = useContext(UserContext);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -41,34 +48,49 @@ const LoginForm = () => {
         password: values.password
       }
       try {
+        actions.setStatus(undefined);
         const data = await fetchData('/login', 'POST', loginHeaders, loginData);
-        console.log(data);
-        // if (data.message === "Account successfully created") {
-        //   alert("Cuenta creada con éxito");
-        //   navigate('/login')
-        //   return;
-        // }
-
-        // if (data.message !== 'Account successfully created') {
-        //   alert("Ha habido un error, inténtelo más tarde");
-        //   actions.setSubmitting(false);
-        //   actions.resetForm();
-        //   return;
-        // }
-
+        //console.log(data);        
+        if ("error" in data) {
+          actions.setSubmitting(false);
+          actions.resetForm({
+            status: {
+              message: "Credenciales inválidas"
+            }
+          });
+          return;
+        }
+        context.setGlobalUser(data);
+        //console.log(globalUser);
+        navigate('/profile');
       } catch (error) {
         console.log(error);
       }
-      actions.setSubmitting(false);
-      actions.resetForm();
+
     },
   });
+
+  /* if ("email" in context.globalUser) {
+    return <Navigate to="/profile" replace />;
+  } */
+
+  /* useEffect(() => {
+    //console.log("useContext", context.globalUser);
+    if ("email" in context.globalUser) {
+      navigate('/profile');
+    }
+  }, []) */
+
 
   return (
     <>
       <h2>Formulario de Inicio de Sesión</h2>
 
-      <form onSubmit={formik.handleSubmit} className='row g-4'>
+      {formik.status && formik.status.message ?
+        <Alert variant='warning'>{formik.status.message}</Alert>
+        : null}
+
+      <form onSubmit={formik.handleSubmit} className='row g-4' noValidate>
         <MDBValidationItem feedback={formik.errors.email} invalid>
           <MDBInput
             name="email"
@@ -78,7 +100,7 @@ const LoginForm = () => {
             value={formik.values.email}
             onChange={formik.handleChange}
           >
-            <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
+            <div className="custom-valid-feedback valid-feedback">{customValidFeedback}</div>
             {/* {formik.errors.email ? <div className='invalid-feedback'>{formik.errors.email}</div> : null} */}
           </MDBInput>
         </MDBValidationItem>
@@ -91,7 +113,7 @@ const LoginForm = () => {
             value={formik.values.password}
             onChange={formik.handleChange}
           >
-            <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
+            <div className="custom-valid-feedback valid-feedback">{customValidFeedback}</div>
             {/*  {formik.errors.password ? <div className='invalid-feedback'>{formik.errors.password}</div> : null} */}
           </MDBInput>
         </MDBValidationItem>
