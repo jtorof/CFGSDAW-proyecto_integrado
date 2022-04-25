@@ -70,7 +70,7 @@ const SigUpForm = () => {
 
   return (
     <>
-      <h2>Formulario de registro</h2>
+      <h2>Formulario de Registro</h2>
       <form onSubmit={formik.handleSubmit} className='row g-4'>
         <MDBValidationItem feedback={formik.errors.email} invalid>
           <MDBInput
