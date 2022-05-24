@@ -45,9 +45,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: ApiToken::class, orphanRemoval: true)]
     private $apiTokens;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiContentUser::class)]
+    private $apiContentUsers;
+
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
+        $this->apiContentUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,6 +148,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($apiToken->getOwner() === $this) {
                 $apiToken->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ApiContentUser>
+     */
+    public function getApiContentUsers(): Collection
+    {
+        return $this->apiContentUsers;
+    }
+
+    public function addApiContentUser(ApiContentUser $apiContentUser): self
+    {
+        if (!$this->apiContentUsers->contains($apiContentUser)) {
+            $this->apiContentUsers[] = $apiContentUser;
+            $apiContentUser->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApiContentUser(ApiContentUser $apiContentUser): self
+    {
+        if ($this->apiContentUsers->removeElement($apiContentUser)) {
+            // set the owning side to null (unless already changed)
+            if ($apiContentUser->getUser() === $this) {
+                $apiContentUser->setUser(null);
             }
         }
 
