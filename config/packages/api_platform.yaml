@@ -6,3 +6,8 @@ api_platform:
         jsonapi: ['application/vnd.api+json']
     swagger:
         versions: [3]
+    # formats:
+    #     json:     ['application/json']
+    #     jsonld:   ['application/ld+json']
+    #     jsonhal:  ['application/hal+json']
+    #     jsonapi:  ['application/vnd.api+json']

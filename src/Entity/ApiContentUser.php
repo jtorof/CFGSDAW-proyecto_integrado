@@ -13,6 +13,12 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 
 #[ORM\Entity(repositoryClass: ApiContentUserRepository::class)]
 #[ApiResource(
+    formats: [
+        'json'
+    ],
+    attributes: [
+        "security" => "is_granted('IS_AUTHENTICATED_FULLY')",
+    ],
     normalizationContext: ['groups' => ['api:read']],
     denormalizationContext: ['groups' => ['api:write']],
     collectionOperations: [
@@ -46,37 +52,37 @@ class ApiContentUser
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[Groups(['api:read', 'api:write'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
-
-    #[Groups(['api:read', 'api:write'])]
-    #[ORM\OneToOne(targetEntity: ApiContentAddress::class)]
-    // #[ORM\OneToOne(targetEntity: ApiContentAddress::class, cascade: ['persist', 'remove'])]
-    private $address;
-
-    #[Groups(['api:read', 'api:write'])]
-    // #[ORM\OneToMany(mappedBy: 'apiContentUser', targetEntity: ApiContentPhone::class, cascade: ['persist', 'remove'])]
-    #[ORM\OneToMany(mappedBy: 'apiContentUser', targetEntity: ApiContentPhone::class)]
-    private $phones;
-
-    #[Groups(['api:read', 'api:write'])]
+    #[SerializedName('id')]
+    #[Groups(['api:read'])]
     #[ApiProperty(identifier: true)]
     #[ORM\Column(type: 'integer')]
     private $publicId;
 
+    #[Groups(['api:read', 'api:write'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $name;
+    
+    #[SerializedName('last-name')]
+    #[Groups(['api:read', 'api:write'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $lastName;
+
+    #[Groups(['api:read', 'api:write'])]
+    #[ORM\OneToOne(mappedBy: 'apiContentUser', targetEntity: ApiContentAddress::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
+    private $address;
+
+    #[Groups(['api:read', 'api:write'])]
+    #[ORM\OneToMany(mappedBy: 'apiContentUser', targetEntity: ApiContentPhone::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
+    // #[ORM\OneToMany(mappedBy: 'apiContentUser', targetEntity: ApiContentPhone::class, cascade: ['persist', 'remove'])]
+    // #[ORM\OneToMany(mappedBy: 'apiContentUser', targetEntity: ApiContentPhone::class)]
+    private $phones;
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'apiContentUsers')]
     private $user;
-    
-    // #[Groups(['api:read', 'api:write'])]
-    // #[ORM\OneToMany(mappedBy: 'apiContentUser', targetEntity: Test::class, cascade: ['persist'])]
-    #[ORM\OneToMany(mappedBy: 'apiContentUser', targetEntity: Test::class)]
-    private $tests;
 
     public function __construct()
     {
         $this->phones = new ArrayCollection();
-        $this->tests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,6 +102,18 @@ class ApiContentUser
         return $this;
     }
 
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
     public function getAddress(): ?ApiContentAddress
     {
         return $this->address;
@@ -111,18 +129,18 @@ class ApiContentUser
     /**
      * @return Collection<int, ApiContentPhone>
      */
-    public function getPhones(): Collection
-    {
-        return $this->phones;
-    }
+    // public function getPhones(): Collection
+    // {
+    //     return $this->phones;
+    // }
 
     /**
-     * Custom method so API Platform write operations work
+     * Custom method so API Platform write operations work.
      */
-    // public function getPhones()
-    // {
-    //     return $this->phones->getValues();
-    // }
+    public function getPhones()
+    {
+        return $this->phones->getValues();
+    }
 
     public function addPhone(ApiContentPhone $phone): self
     {
@@ -168,44 +186,5 @@ class ApiContentUser
         $this->user = $user;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Test>
-     */
-    public function getTests(): Collection
-    {
-        return $this->tests;
-    }
-    // public function getTests()
-    // {
-    //     return $this->tests->getValues();
-    // }
-
-    public function addTest(Test $test): self
-    {
-        if (!$this->tests->contains($test)) {
-            $this->tests[] = $test;
-            $test->setApiContentUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTest(Test $test): self
-    {
-        if ($this->tests->removeElement($test)) {
-            // set the owning side to null (unless already changed)
-            if ($test->getApiContentUser() === $this) {
-                $test->setApiContentUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->tests;
     }
 }

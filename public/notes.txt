@@ -1,0 +1,12 @@
+fetch: 'EAGER' -> para que inicialize los objetos en el put/patch y poder comprobar si tienen id
+
+
+// return new JsonResponse(
+                //     [
+                //         "address" => $address,
+                //         "arrayAddress" => (array)$address,
+                //         "id" => $address->getId(),
+                //     ]
+                // ); 
+
+ // file_put_contents('SOMELOG3.LOG', print_r(serialize($data->getAddress()), true).PHP_EOL, FILE_APPEND);

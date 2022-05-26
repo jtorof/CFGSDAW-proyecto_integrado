@@ -46,6 +46,9 @@ class ApiContentAddress
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $country;
 
+    #[ORM\OneToOne(targetEntity: ApiContentUser::class, inversedBy: "address")]
+    private $apiContentUser;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -83,6 +86,18 @@ class ApiContentAddress
     public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getApiContentUser(): ?ApiContentUser
+    {
+        return $this->apiContentUser;
+    }
+
+    public function setApiContentUser(?ApiContentUser $apiContentUser): self
+    {
+        $this->apiContentUser = $apiContentUser;
 
         return $this;
     }
