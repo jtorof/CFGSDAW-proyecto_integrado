@@ -42,8 +42,8 @@ class RegistrationController extends AbstractController
                 file_put_contents('SOMELOG.LOG', "Entra en if".PHP_EOL, FILE_APPEND);
             } else {
                 // Commented cause testing things
-                // $entityManager->persist($user);
-                // $entityManager->flush();
+                $entityManager->persist($user);
+                $entityManager->flush();
     
                 $message = 'Account successfully created';
             }
