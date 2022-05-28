@@ -1,0 +1,6 @@
+framework:
+    rate_limiter:
+        content_api:
+            policy: 'sliding_window'
+            limit: '%env(int:API_RATE_LIMIT)%'
+            interval: '1 minutes'          
