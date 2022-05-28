@@ -17,10 +17,16 @@ use ApiPlatform\Core\Annotation\ApiProperty;
         'json'
     ],
     attributes: [
-        "security" => "is_granted('IS_AUTHENTICATED_FULLY')",
+        "security" => "is_granted('IS_AUTHENTICATED_FULLY')",   //Likely redundant since it's being controlled in security.yaml
     ],
-    normalizationContext: ['groups' => ['api:read']],
-    denormalizationContext: ['groups' => ['api:write']],
+    normalizationContext: [
+        'groups' => ['api:read'],
+        'swagger_definition_name' => 'Read',
+    ],
+    denormalizationContext: [
+        'groups' => ['api:write'],
+        'swagger_definition_name' => 'Write',
+    ],
     collectionOperations: [
         'get' => [
             'path' => '/user',

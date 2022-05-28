@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -48,10 +49,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiContentUser::class)]
     private $apiContentUsers;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ContentApiRequestLog::class)]
+    private $contentApiRequestLogs;
+
+    #[ORM\Column(type: 'boolean')]
+    private $hasApiDataCopy;
+
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
         $this->apiContentUsers = new ArrayCollection();
+        $this->contentApiRequestLogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -182,5 +190,53 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, ContentApiRequestLog>
+     */
+    public function getContentApiRequestLogs(): Collection
+    {
+        return $this->contentApiRequestLogs;
+    }
+
+    public function addContentApiRequestLog(ContentApiRequestLog $contentApiRequestLog): self
+    {
+        if (!$this->contentApiRequestLogs->contains($contentApiRequestLog)) {
+            $this->contentApiRequestLogs[] = $contentApiRequestLog;
+            $contentApiRequestLog->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContentApiRequestLog(ContentApiRequestLog $contentApiRequestLog): self
+    {
+        if ($this->contentApiRequestLogs->removeElement($contentApiRequestLog)) {
+            // set the owning side to null (unless already changed)
+            if ($contentApiRequestLog->getUser() === $this) {
+                $contentApiRequestLog->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getHasApiDataCopy(): ?bool
+    {
+        return $this->hasApiDataCopy;
+    }
+
+    public function setHasApiDataCopy(bool $hasApiDataCopy): self
+    {
+        $this->hasApiDataCopy = $hasApiDataCopy;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setHasApiDataCopyValue()
+    {
+        $this->hasApiDataCopy = false;
     }
 }
