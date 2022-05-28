@@ -18,6 +18,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            host: '%env(resolve:HOST_REGEX)%'
             lazy: true
             provider: app_user_provider
             logout:
@@ -28,19 +29,19 @@ security:
             json_login:
                 check_path: app_login
 
-            custom_authenticators:
-                - App\Security\ApiTokenAuthenticator
-
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+        api:
+            custom_authenticators:
+                - App\Security\ApiTokenAuthenticator
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        # - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY } #Custom
+        - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY } #Custom - controlled here instead of directly in resource cause otherwise it attempts to fetch data before checking if user is logged, and throws an error trying to call things on null
 
 when@test:
     security:

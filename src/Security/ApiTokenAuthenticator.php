@@ -12,9 +12,18 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use App\Repository\UserRepository;
+use App\Repository\ApiTokenRepository;
 
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
+    public function __construct(
+        private UserRepository $userRepository,
+        private ApiTokenRepository $apiTokenRepository,
+    )
+    {
+    }
+
     /**
      * Called on every request to decide if this authenticator should be
      * used for the request. Returning `false` will cause this authenticator
@@ -28,13 +37,27 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
     public function authenticate(Request $request): Passport
     {
         $apiToken = $request->headers->get('X-AUTH-TOKEN');
-        if (null === $apiToken) {
+       
+        if ($apiToken === "") {
             // The token header was empty, authentication fails with HTTP Status
             // Code 401 "Unauthorized"
-            throw new CustomUserMessageAuthenticationException('No API token provided');
+            throw new CustomUserMessageAuthenticationException('Acceso denegado - No se ha incluído el API Token');
         }
 
-        return new SelfValidatingPassport(new UserBadge($apiToken));
+        $apiTokenObject = $this->apiTokenRepository->findOneBy(
+            [ "token" => $apiToken ],
+        );
+
+        if (!$apiTokenObject) {
+            throw new CustomUserMessageAuthenticationException('Acceso denegado - API Token inválido');
+        }
+
+        if (!$apiTokenObject->getIsEnabled()) {
+            throw new CustomUserMessageAuthenticationException('Acceso denegado - API Token desactivado');
+        }
+        $user = $apiTokenObject->getOwner();
+
+        return new SelfValidatingPassport(new UserBadge($user->getEmail()));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
