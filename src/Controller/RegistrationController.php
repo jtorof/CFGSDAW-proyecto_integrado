@@ -35,11 +35,11 @@ class RegistrationController extends AbstractController
                 );
 
             $errors = $validator->validate($user);
-            file_put_contents('SOMELOG.LOG', print_r($errors, true).PHP_EOL, FILE_APPEND);
+            // file_put_contents('SOMELOG.LOG', print_r($errors, true).PHP_EOL, FILE_APPEND);
             if (count($errors) > 0) {
                 $error = (string) $errors;
                 //$error = 'Validation error';
-                file_put_contents('SOMELOG.LOG', "Entra en if".PHP_EOL, FILE_APPEND);
+                // file_put_contents('SOMELOG.LOG', "Entra en if".PHP_EOL, FILE_APPEND);
             } else {
                 // Commented cause testing things
                 $entityManager->persist($user);
@@ -49,7 +49,7 @@ class RegistrationController extends AbstractController
             }
 
         } catch (\Exception $e) {
-            file_put_contents('SOMELOG.LOG', "Catch".PHP_EOL, FILE_APPEND);
+            // file_put_contents('SOMELOG.LOG', "Catch".PHP_EOL, FILE_APPEND);
             $error = $e->getMessage();
         }
         
