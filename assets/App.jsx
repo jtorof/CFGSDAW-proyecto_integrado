@@ -10,6 +10,8 @@ import SignUp from './routes/SignUp';
 import Profile from './routes/Profile';
 import { UserContext } from './helpers/context';
 import AccessRestricted from './routes/AccessRestricted';
+import RequireAuth from './components/RequireAuth';
+import HeaderTagsSetter from './components/HeaderTagsSetter';
 
 const App = () => {
   const [globalUser, setGlobalUser] = useState({});
@@ -24,15 +26,23 @@ const App = () => {
 
   return (
     <UserContext.Provider value={{ globalUser, setGlobalUser }}>
+      <HeaderTagsSetter />
       <Routes>
         <Route path="/" element={<Layout showBreadcrumbs={true} />}>
           <Route index element={<Home />} />
           <Route path="docs" element={<Documentation />} />
-          <Route path="login" element={!("email" in globalUser) ? <Login /> : <Navigate to="/profile" replace/>} />
-          <Route path="signup" element={!("email" in globalUser) ? <SignUp /> : <Navigate to="/profile" replace/>} />
+          <Route path="login" element={!("email" in globalUser) ? <Login /> : <Navigate to="/profile" replace />} />
+          <Route path="signup" element={!("email" in globalUser) ? <SignUp /> : <Navigate to="/profile" replace />} />
           <Route path="login/login/login" element={<Login />} />
           <Route path="login/:loginId" element={<Login />} />
-          <Route path="profile" element={"email" in globalUser ? <Profile /> : <Navigate to="/acceso-restringido" replace/> } />
+          <Route
+            path="profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
         </Route>
         <Route path="admin" element={<AdminLayout />} >
 

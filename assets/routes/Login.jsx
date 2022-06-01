@@ -1,14 +1,10 @@
 import React from 'react';
-import { Helmet } from "react-helmet";
 import LoginForm from '../components/LoginForm';
 
-const Login = () => {
+const Login = ({ prevLocation }) => {
   return (
     <>
-      <Helmet>
-        <title>APIParaPracticar | Iniciar Sesión</title>
-      </Helmet>
-      <LoginForm />
+      <LoginForm prevLocation={ prevLocation }/>
     </>
   )
 }

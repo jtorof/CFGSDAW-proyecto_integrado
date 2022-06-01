@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -33,9 +33,12 @@ const loginHeaders = {
 
 const customValidFeedback = `Parece correcto`;
 
-const LoginForm = () => {
+const LoginForm = ({ prevLocation }) => {
   const context = useContext(UserContext);
   const navigate = useNavigate();
+
+  // console.log(prevLocation);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -50,7 +53,7 @@ const LoginForm = () => {
       try {
         actions.setStatus(undefined);
         const data = await fetchData('/login', 'POST', loginHeaders, loginData);
-        //console.log(data);        
+        console.log(data);        
         if ("error" in data) {
           actions.setSubmitting(false);
           actions.resetForm({
@@ -62,7 +65,9 @@ const LoginForm = () => {
         }
         context.setGlobalUser(data);
         //console.log(globalUser);
-        navigate('/profile');
+        if(typeof prevLocation !== "undefined") {
+          navigate(prevLocation, { replace: true });
+        }
       } catch (error) {
         console.log(error);
       }
