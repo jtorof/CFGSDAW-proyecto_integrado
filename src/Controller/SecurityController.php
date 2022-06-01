@@ -14,7 +14,7 @@ class SecurityController extends AbstractController
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->json([
                 'error' => 'Invalid login request: check that the Content-Type header is "application/json".'
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         }
         
         return $this->json($this->getUser(), Response::HTTP_OK, [], ['groups' => 'userInfo']);
