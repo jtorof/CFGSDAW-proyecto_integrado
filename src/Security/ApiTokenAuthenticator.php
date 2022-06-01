@@ -20,6 +20,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
     public function __construct(
         private UserRepository $userRepository,
         private ApiTokenRepository $apiTokenRepository,
+        private $apiTokenPassphrase,
     )
     {
     }
@@ -37,7 +38,10 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
     public function authenticate(Request $request): Passport
     {
         $apiToken = $request->headers->get('X-AUTH-TOKEN');
-       
+        $iv = substr($apiToken, 0, 16);
+        $token = substr($apiToken, 16);
+        $encodedApiToken = openssl_encrypt($token, "aes-256-cbc", $this->apiTokenPassphrase, 0, $iv);
+
         if ($apiToken === "") {
             // The token header was empty, authentication fails with HTTP Status
             // Code 401 "Unauthorized"
@@ -45,7 +49,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         }
 
         $apiTokenObject = $this->apiTokenRepository->findOneBy(
-            [ "token" => $apiToken ],
+            [ "token" => $iv.$encodedApiToken ],
         );
 
         if (!$apiTokenObject) {
