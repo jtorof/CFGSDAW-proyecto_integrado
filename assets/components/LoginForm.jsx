@@ -65,7 +65,8 @@ const LoginForm = ({ prevLocation }) => {
         }
         context.setGlobalUser(data);
         //console.log(globalUser);
-        if(typeof prevLocation !== "undefined") {
+        if (typeof prevLocation !== "undefined") {
+          console.log(prevLocation);
           navigate(prevLocation, { replace: true });
         }
       } catch (error) {
@@ -89,45 +90,49 @@ const LoginForm = ({ prevLocation }) => {
 
   return (
     <>
-      <h2>Formulario de Inicio de Sesión</h2>
+      <MDBRow center>
+        <MDBCol md='6'>
+          <h2>Formulario de Inicio de Sesión</h2>
 
-      {formik.status && formik.status.message ?
-        <Alert variant='warning'>{formik.status.message}</Alert>
-        : null}
+          {formik.status && formik.status.message ?
+            <Alert variant='warning'>{formik.status.message}</Alert>
+            : null}
 
-      <form onSubmit={formik.handleSubmit} className='row g-4' noValidate>
-        <MDBValidationItem feedback={formik.errors.email} invalid>
-          <MDBInput
-            name="email"
-            label="Email"
-            type="email"
-            className={formik.touched.email && formik.errors.email ? 'is-invalid' : formik.touched.email && !formik.errors.email ? 'is-valid' : ''}
-            value={formik.values.email}
-            onChange={formik.handleChange}
-          >
-            <div className="custom-valid-feedback valid-feedback">{customValidFeedback}</div>
-            {/* {formik.errors.email ? <div className='invalid-feedback'>{formik.errors.email}</div> : null} */}
-          </MDBInput>
-        </MDBValidationItem>
-        <MDBValidationItem feedback={formik.errors.password} invalid>
-          <MDBInput
-            name="password"
-            label="Contraseña"
-            type="password"
-            className={formik.touched.password && formik.errors.password ? 'is-invalid' : formik.touched.password && !formik.errors.password ? 'is-valid' : ''}
-            value={formik.values.password}
-            onChange={formik.handleChange}
-          >
-            <div className="custom-valid-feedback valid-feedback">{customValidFeedback}</div>
-            {/*  {formik.errors.password ? <div className='invalid-feedback'>{formik.errors.password}</div> : null} */}
-          </MDBInput>
-        </MDBValidationItem>
-        <div className="d-block text-center">
-          <MDBBtn type='submit' disabled={formik.isSubmitting}>
-            Iniciar sesión
-          </MDBBtn>
-        </div>
-      </form>
+          <form onSubmit={formik.handleSubmit} className='row g-4' noValidate>
+            <MDBValidationItem feedback={formik.errors.email} invalid>
+              <MDBInput
+                name="email"
+                label="Email"
+                type="email"
+                className={formik.touched.email && formik.errors.email ? 'is-invalid' : formik.touched.email && !formik.errors.email ? 'is-valid' : ''}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+              >
+                <div className="custom-valid-feedback valid-feedback">{customValidFeedback}</div>
+                {/* {formik.errors.email ? <div className='invalid-feedback'>{formik.errors.email}</div> : null} */}
+              </MDBInput>
+            </MDBValidationItem>
+            <MDBValidationItem feedback={formik.errors.password} invalid>
+              <MDBInput
+                name="password"
+                label="Contraseña"
+                type="password"
+                className={formik.touched.password && formik.errors.password ? 'is-invalid' : formik.touched.password && !formik.errors.password ? 'is-valid' : ''}
+                value={formik.values.password}
+                onChange={formik.handleChange}
+              >
+                <div className="custom-valid-feedback valid-feedback">{customValidFeedback}</div>
+                {/*  {formik.errors.password ? <div className='invalid-feedback'>{formik.errors.password}</div> : null} */}
+              </MDBInput>
+            </MDBValidationItem>
+            <div className="d-block text-center">
+              <MDBBtn type='submit' disabled={formik.isSubmitting}>
+                Iniciar sesión
+              </MDBBtn>
+            </div>
+          </form>
+        </MDBCol>
+      </MDBRow>
     </>
   );
 };

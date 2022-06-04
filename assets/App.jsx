@@ -33,8 +33,8 @@ const App = () => {
           <Route path="docs" element={<Documentation />} />
           <Route path="login" element={!("email" in globalUser) ? <Login /> : <Navigate to="/profile" replace />} />
           <Route path="signup" element={!("email" in globalUser) ? <SignUp /> : <Navigate to="/profile" replace />} />
-          <Route path="login/login/login" element={<Login />} />
-          <Route path="login/:loginId" element={<Login />} />
+          {/* <Route path="login/login/login" element={<Login />} />
+          <Route path="login/:loginId" element={<Login />} /> */}
           <Route
             path="profile"
             element={

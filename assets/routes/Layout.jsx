@@ -11,17 +11,19 @@ const Layout = ({ showBreadcrumbs }) => {
         <Navigation showBreadcrumbs={showBreadcrumbs} />
       </header>
       <main>
-        <Outlet />
+        <MDBContainer breakpoint="xl">
+          <Outlet />
+        </MDBContainer>
       </main>
       <footer>FOOTER</footer>
       <CookieConsent
         containerClasses='alert alert-primary d-flex align-items-center justify-content-center fixed-bottom mb-0'
         buttonText={
-        <MDBBtn
-          tag='div'
-        >
-          Acepto
-        </MDBBtn>}
+          <MDBBtn
+            tag='div'
+          >
+            Acepto
+          </MDBBtn>}
         type="submit"
         disableStyles
         contentClasses='me-3'

@@ -193,4 +193,12 @@ class ApiContentUser
 
         return $this;
     }
+
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->address = (clone $this->address)->setApiContentUser($this);
+            $this->phones = $this->phones->map(function ($item) { return (clone $item)->setApiContentUser($this);});
+        }
+    }
 }

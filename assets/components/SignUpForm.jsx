@@ -70,65 +70,69 @@ const SigUpForm = () => {
 
   return (
     <>
-      <h2>Formulario de Registro</h2>
-      <form onSubmit={formik.handleSubmit} className='row g-4'>
-        <MDBValidationItem feedback={formik.errors.email} invalid>
-          <MDBInput
-            name="email"
-            label="Email"
-            type="email"
-            className={formik.touched.email && formik.errors.email ? 'is-invalid' : formik.touched.email && !formik.errors.email ? 'is-valid' : ''}
-            value={formik.values.email}
-            onChange={formik.handleChange}
-          >
-            <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
-          </MDBInput>
-        </MDBValidationItem>
-        <MDBValidationItem feedback={formik.errors.password1} invalid>
-          <MDBInput
-            name="password1"
-            label="Contraseña"
-            type="password"
-            className={formik.touched.password1 && formik.errors.password1 ? 'is-invalid' : formik.touched.password1 && !formik.errors.password1 ? 'is-valid' : ''}
-            value={formik.values.password1}
-            onChange={formik.handleChange}
-          >
-            <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
-          </MDBInput>
-        </MDBValidationItem>
-        <MDBValidationItem feedback={formik.errors.password2} invalid>
-          <MDBInput
-            name="password2"
-            label="Repita la contraseña"
-            type="password"
-            className={formik.touched.password2 && formik.errors.password2 ? 'is-invalid' : formik.touched.password2 && !formik.errors.password2 ? 'is-valid' : ''}
-            value={formik.values.password2}
-            onChange={formik.handleChange}
-          >
-            <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
-          </MDBInput>
-        </MDBValidationItem>
-        <MDBValidationItem feedback={formik.errors.terms} invalid className='d-flex justify-content-center'>
-          <MDBCheckbox
-            // wrapperClass='d-flex justify-content-center'
-            name="terms"
-            label='Acepto los términos y condiciones'
-            className={formik.touched.terms && formik.errors.terms ? 'is-invalid' : formik.touched.terms && !formik.errors.terms ? 'is-valid' : ''}
-            value={formik.values.terms}
-            onChange={formik.handleChange}
-          />
-        </MDBValidationItem>
-        <div className="d-block text-center">
-          <MDBBtn type='submit' disabled={formik.isSubmitting}>
-            Crear cuenta
-          </MDBBtn>
-        </div>
-        <div className='text-center'>
-          <p>
-            ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
-          </p>
-        </div>
-      </form>
+      <MDBRow center>
+        <MDBCol md='6'>
+          <h2>Formulario de Registro</h2>
+          <form onSubmit={formik.handleSubmit} className='row g-4'>
+            <MDBValidationItem feedback={formik.errors.email} invalid>
+              <MDBInput
+                name="email"
+                label="Email"
+                type="email"
+                className={formik.touched.email && formik.errors.email ? 'is-invalid' : formik.touched.email && !formik.errors.email ? 'is-valid' : ''}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+              >
+                <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
+              </MDBInput>
+            </MDBValidationItem>
+            <MDBValidationItem feedback={formik.errors.password1} invalid>
+              <MDBInput
+                name="password1"
+                label="Contraseña"
+                type="password"
+                className={formik.touched.password1 && formik.errors.password1 ? 'is-invalid' : formik.touched.password1 && !formik.errors.password1 ? 'is-valid' : ''}
+                value={formik.values.password1}
+                onChange={formik.handleChange}
+              >
+                <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
+              </MDBInput>
+            </MDBValidationItem>
+            <MDBValidationItem feedback={formik.errors.password2} invalid>
+              <MDBInput
+                name="password2"
+                label="Repita la contraseña"
+                type="password"
+                className={formik.touched.password2 && formik.errors.password2 ? 'is-invalid' : formik.touched.password2 && !formik.errors.password2 ? 'is-valid' : ''}
+                value={formik.values.password2}
+                onChange={formik.handleChange}
+              >
+                <div className="custom-valid-feedback valid-feedback">Parece correcto</div>
+              </MDBInput>
+            </MDBValidationItem>
+            <MDBValidationItem feedback={formik.errors.terms} invalid className='d-flex justify-content-center'>
+              <MDBCheckbox
+                // wrapperClass='d-flex justify-content-center'
+                name="terms"
+                label='Acepto los términos y condiciones'
+                className={formik.touched.terms && formik.errors.terms ? 'is-invalid' : formik.touched.terms && !formik.errors.terms ? 'is-valid' : ''}
+                value={formik.values.terms}
+                onChange={formik.handleChange}
+              />
+            </MDBValidationItem>
+            <div className="d-block text-center">
+              <MDBBtn type='submit' disabled={formik.isSubmitting}>
+                Crear cuenta
+              </MDBBtn>
+            </div>
+            <div className='text-center'>
+              <p>
+                ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
+              </p>
+            </div>
+          </form>
+        </MDBCol>
+      </MDBRow>
     </>
   )
 }

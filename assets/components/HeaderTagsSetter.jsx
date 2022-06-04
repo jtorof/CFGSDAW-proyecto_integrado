@@ -10,8 +10,7 @@ const HeaderTagsSetter = () => {
 
   return (
     <Helmet>
-      <title>{routesNamesMap.get(route)} | APIParaPracticar</title>
-      <description>APIParaPracticar - API REST para aprender a atacar APIs</description>
+      <title>{ routesNamesMap.get(route) ? routesNamesMap.get(route) : `No encontrado` } | APIParaPracticar</title>
     </Helmet>
   )
 }

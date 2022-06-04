@@ -7,6 +7,7 @@ routesNamesMap.set("login", "Iniciar Sesión");
 routesNamesMap.set("signup", "Crear Cuenta");
 routesNamesMap.set("profile", "Perfil de Usuario");
 routesNamesMap.set("admin", "Administración");
+routesNamesMap.set("acceso-restringido", "Acceso Restringido");
 routesNamesMap.set(regExp, "test");
 
 export default routesNamesMap

@@ -45,6 +45,64 @@ class ContentApiRequestLogRepository extends ServiceEntityRepository
         }
     }
 
+    public function countRequestsOfEachType($user): array
+    {
+        $getCount = $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.operation = :operation')
+            ->setParameter('user', $user)
+            ->setParameter('operation', 'GET')
+            ->select('COUNT(c.id) as count')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $postCount = $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.operation = :operation')
+            ->setParameter('user', $user)
+            ->setParameter('operation', 'POST')
+            ->select('COUNT(c.id) as count')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $deleteCount = $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.operation = :operation')
+            ->setParameter('user', $user)
+            ->setParameter('operation', 'DELETE')
+            ->select('COUNT(c.id) as count')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $putCount = $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.operation = :operation')
+            ->setParameter('user', $user)
+            ->setParameter('operation', 'PUT')
+            ->select('COUNT(c.id) as count')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $patchCount = $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.operation = :operation')
+            ->setParameter('user', $user)
+            ->setParameter('operation', 'PATCH')
+            ->select('COUNT(c.id) as count')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        file_put_contents("SOMELOG.log", print_r($getCount, true).PHP_EOL, FILE_APPEND);
+
+        return [
+            'getCount' => $getCount,
+            'postCount' => $postCount,
+            'deleteCount' => $deleteCount,
+            'putCount' => $putCount,
+            'patchCount' => $patchCount,
+        ];
+    }
+
     // /**
     //  * @return ContentApiRequestLog[] Returns an array of ContentApiRequestLog objects
     //  */

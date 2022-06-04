@@ -45,6 +45,28 @@ class ApiContentUserRepository extends ServiceEntityRepository
         }
     }
 
+    public function cloneMasterData(): void
+    {
+        $masterData = $this->findBy(
+            [ "user" => 1 ]
+        );
+        foreach ($masterData as $item) {
+            $this->_em->persist((clone $item)->setUser($this->getUser()));
+            $this->_em->flush();
+        }
+    }
+
+    public function deleteUserData():void
+    {
+        $userData = $this->findBy(
+            [ "user" => $this->getUser()->getId() ]
+        );
+        foreach ($userData as $item) {
+            $this->_em->remove($item);
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return ApiContentUser[] Returns an array of ApiContentUser objects
     //  */

@@ -6,6 +6,7 @@ use App\Repository\ApiTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
 class ApiToken
 {
@@ -51,6 +52,12 @@ class ApiToken
         $this->isEnabled = $isEnabled;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setIsEnabledValue()
+    {
+        $this->isEnabled = true;
     }
 
     public function getOwner(): ?User

@@ -10,3 +10,5 @@ fetch: 'EAGER' -> para que inicialize los objetos en el put/patch y poder compro
                 // ); 
 
  // file_put_contents('SOMELOG3.LOG', print_r(serialize($data->getAddress()), true).PHP_EOL, FILE_APPEND);
+
+ codigo duplicado - clase helper funciones?
