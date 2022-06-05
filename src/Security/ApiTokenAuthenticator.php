@@ -56,9 +56,9 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException('Acceso denegado - API Token inválido');
         }
 
-        if (!$apiTokenObject->getIsEnabled()) {
-            throw new CustomUserMessageAuthenticationException('Acceso denegado - API Token desactivado');
-        }
+        // if (!$apiTokenObject->getIsEnabled()) {
+        //     throw new CustomUserMessageAuthenticationException('Acceso denegado - API Token desactivado');
+        // }
         $user = $apiTokenObject->getOwner();
 
         return new SelfValidatingPassport(new UserBadge($user->getEmail()));

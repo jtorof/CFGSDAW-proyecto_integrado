@@ -34,6 +34,10 @@ class UserOperationsController extends AbstractController
     {
         $limiter = $this->contentApiLimiter->create($this->getUser()->getUserIdentifier());
         $limiter->reset();
+        $this->getUser()->getApiTokens()[0]->setIsEnabled(true);
+        $entityManager = $this->entityManager;
+        $entityManager->persist($this->getUser());
+        $entityManager->flush();
 
         return $this->json(
             [ 'message' => "Ya puede volver a acceder" ], 
@@ -126,18 +130,27 @@ class UserOperationsController extends AbstractController
     #[Route('/get-user-info', name: 'get_user_info')]
     public function getUserInfo(ContentApiRequestLogRepository $contentApiRequestLogRepository): Response
     {
-        $string = $this->getUser()->getApiTokens()[0]->getToken();
-        $iv = substr($string, 0, 16);
-        $token = substr($string, 16);
-        $decodedApiToken = openssl_decrypt($token, "aes-256-cbc", $this->apiTokenPassphrase, 0, $iv);
-        file_put_contents('TOKENS.LOG', print_r($iv.$decodedApiToken, true).PHP_EOL, FILE_APPEND);
+        $user = $this->getUser();              
+        if ($token = $user->getApiTokens()[0]) {            
+            $string = $token->getToken();       
+            $apiKeyIsEnabled = $token->getIsEnabled();
+            $iv = substr($string, 0, 16);
+            $token = substr($string, 16);
+            $decodedApiToken = openssl_decrypt($token, "aes-256-cbc", $this->apiTokenPassphrase, 0, $iv);
+        } else {
+            $iv = "";
+            $decodedApiToken = ""; 
+            $apiKeyIsEnabled = false; 
+        }
+        // file_put_contents('TOKENS.LOG', print_r($iv.$decodedApiToken, true).PHP_EOL, FILE_APPEND);
 
-        $stats = $contentApiRequestLogRepository->countRequestsOfEachType($this->getUser());
+        $stats = $contentApiRequestLogRepository->countRequestsOfEachType($user);
 
         return $this->json(
             [ 
                 'stats' => $stats,
                 'apiKey' => $iv.$decodedApiToken,
+                'apiKeyIsEnabled' => $apiKeyIsEnabled,
             ], 
             Response::HTTP_OK,
         );

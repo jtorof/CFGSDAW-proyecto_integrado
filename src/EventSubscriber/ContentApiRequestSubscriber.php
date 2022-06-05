@@ -7,21 +7,75 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Http\EventListener\DefaultLogoutListener;
 use App\Entity\ContentApiRequestLog;
+use App\Entity\User;
+use App\Entity\ApiToken;
+use App\Repository\ContentApiRequestLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 
 class ContentApiRequestSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private Security $security,
         private RateLimiterFactory $contentApiLimiter,
-        private TokenStorageInterface $tokenStorage,
-        private DefaultLogoutListener $defaultLogoutListener,
         private EntityManagerInterface $entityManager,
+        private HubInterface $hub,
     ) 
     {
+    }
+
+    private function setTokenDisabled(ApiToken $apiKey): void 
+    {
+        $apiKey->setIsEnabled(false);
+        $this->entityManager->persist($apiKey);
+        $this->entityManager->flush();
+    }
+
+    private function setTokenEnabled(ApiToken $apiKey): void 
+    {
+        $apiKey->setIsEnabled(true);
+        $this->entityManager->persist($apiKey);
+        $this->entityManager->flush();
+    }
+
+    private function getUserStats(ContentApiRequestLogRepository $contentApiRequestLogRepository): array
+    {
+        return $contentApiRequestLogRepository->countRequestsOfEachType($this->security->getUser());
+    }
+
+    private function publishUpdate(): void
+    {
+        $userIdentifier = $this->security->getUser()->getUserIdentifier();
+        $update = new Update(
+            "apiparapracticar.com/user/$userIdentifier",
+            json_encode([
+                "stats" => $this->getUserStats($this->entityManager->getRepository(ContentApiRequestLog::class)),
+                'apiKeyIsEnabled' => $this->security->getUser()->getApiTokens()[0]->getIsEnabled(),
+            ]),
+        );
+
+        file_put_contents("TESTHUB.LOG", print_r(
+            $this->hub->getUrl()."-".
+            $this->hub->getPublicUrl(), true).PHP_EOL, FILE_APPEND);
+        $this->hub->publish($update);
+    }
+
+
+    private function rateLimit(String $identifier, User $user = null): void
+    {
+        $limiter = $this->contentApiLimiter->create($identifier);
+        
+        if (false === $limiter->consume(1)->isAccepted()) {
+            if ($user) {
+                $this->setTokenDisabled($user->getApiTokens()[0]);
+                $this->publishUpdate();
+            }
+            throw new TooManyRequestsHttpException();
+        }
+
+        return;
     }
 
     public static function getSubscribedEvents(): array
@@ -38,36 +92,22 @@ class ContentApiRequestSubscriber implements EventSubscriberInterface
         $method = $request->getMethod();
         $user = $this->security->getUser();
 
-        // file_put_contents('REQUEST.LOG', print_r($_SERVER['SERVER_NAME']."-".$request->getHost(), true).PHP_EOL, FILE_APPEND);
-        // file_put_contents('REQUEST.LOG', print_r($_SERVER['HTTP_HOST']."-".$request->getHost(), true).PHP_EOL, FILE_APPEND);
-
         if (!preg_match('/^\/api\/user.*$/', $requestUri)) {
-            // file_put_contents('REQUEST.LOG', print_r("nomatch-$requestUri", true).PHP_EOL.PHP_EOL, FILE_APPEND);
             return; //TODO: consider rate limiting whole site
         }
 
-        // file_put_contents('REQUEST.LOG', print_r("match-$requestUri", true).PHP_EOL, FILE_APPEND);
-        // file_put_contents('REQUEST.LOG', print_r($request->getSchemeAndHttpHost(), true).PHP_EOL, FILE_APPEND);
-
-        if (!$user) {
-            file_put_contents('REQUEST.LOG', print_r("noUser", true).PHP_EOL, FILE_APPEND);
-            $limiter = $this->contentApiLimiter->create($request->getClientIp());
-        
-            if (false === $limiter->consume(1)->isAccepted()) {
-                throw new TooManyRequestsHttpException();
-            }
+        if (!$user) {            
+            $this->rateLimit($request->getClientIp());
 
             return;
         }
         
         $userIdentifier = $user->getUserIdentifier();
-        $limiter = $this->contentApiLimiter->create($userIdentifier);
-                   
-        if (false === $limiter->consume(1)->isAccepted()) {
-            throw new TooManyRequestsHttpException();
-        }
 
-        // If reaches here, stores operation info to database
+        $this->rateLimit($userIdentifier, $user);
+        
+        // If it reaches here, stores operation info to database, sets apikey enabled
+        $this->setTokenEnabled($user->getApiTokens()[0]);
         $log = new ContentApiRequestLog();
         $log->setUser($user);
         $log->setOperation($method);
@@ -75,6 +115,8 @@ class ContentApiRequestSubscriber implements EventSubscriberInterface
         $this->entityManager->persist($log);
         $this->entityManager->flush();
 
+        $this->publishUpdate();
+
         return;             
-    }
+    }    
 }
