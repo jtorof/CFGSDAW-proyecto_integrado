@@ -49,6 +49,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-cookie-consent", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:7.4.1"],\
             ["react-dom", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:17.0.2"],\
             ["react-helmet", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:6.1.0"],\
+            ["react-is", "npm:18.1.0"],\
             ["react-router-dom", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:6.3.0"],\
             ["regenerator-runtime", "npm:0.13.9"],\
             ["sass", "npm:1.50.0"],\
@@ -8555,6 +8556,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-is", "npm:16.13.1"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:18.1.0", {\
+          "packageLocation": "./.yarn/cache/react-is-npm-18.1.0-6642a99f70-d206a0fe67.zip/node_modules/react-is/",\
+          "packageDependencies": [\
+            ["react-is", "npm:18.1.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["react-lifecycles-compat", [\
@@ -9750,6 +9758,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-cookie-consent", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:7.4.1"],\
             ["react-dom", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:17.0.2"],\
             ["react-helmet", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:6.1.0"],\
+            ["react-is", "npm:18.1.0"],\
             ["react-router-dom", "virtual:ad7d3f57fef92645e9167baf64214f7e8ce825886f920175265512e94220aefca38040ef9a132ab42f011d45992974fe01f59f700b2b8240ca02fd4fb7fe4687#npm:6.3.0"],\
             ["regenerator-runtime", "npm:0.13.9"],\
             ["sass", "npm:1.50.0"],\
