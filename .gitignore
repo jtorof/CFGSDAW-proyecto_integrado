@@ -26,3 +26,6 @@ yarn-error.log
 /public/*.log
 /public/*.LOG
 ###< custom logs ###
+###> custom backups ###
+*.custom.bup
+###< custom backups ###
