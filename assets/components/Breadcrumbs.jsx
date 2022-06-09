@@ -22,7 +22,7 @@ const Breadcrumbs = () => {
     }
   }
 
-  const generatedCrumbs = rawCrumbs.map((crumb, index) => {
+  const generatedCrumbs = rawCrumbs.map((crumb, index, array) => {
     if (index === 0) {
       url += crumb;
     } else {
@@ -38,6 +38,11 @@ const Breadcrumbs = () => {
         content = crumb;
       }
     }
+    if (index + 1 == array.length) {
+      return <MDBBreadcrumbItem key={index} aria-current="page">
+        {content}
+      </MDBBreadcrumbItem>
+    }
     return <MDBBreadcrumbItem key={index}>
       {content}
     </MDBBreadcrumbItem>
@@ -45,7 +50,7 @@ const Breadcrumbs = () => {
 
   useEffect(() => {
     setRawCrumbs([]);
-    
+
     if (location.pathname === "/") {
       setShowBreadcrumbs(false);
     } else {
@@ -56,7 +61,7 @@ const Breadcrumbs = () => {
 
 
   return (
-    showBreadcrumbs ? <MDBBreadcrumb aria-label="breadcrumb">Breadcrumb:{'\u00A0'}{generatedCrumbs}</MDBBreadcrumb> : null
+    showBreadcrumbs ? <MDBBreadcrumb aria-label="breadcrumb">Se encuentra en:{'\u00A0'}{generatedCrumbs}</MDBBreadcrumb> : null
   )
 }
 
