@@ -29,10 +29,10 @@ use ApiPlatform\Core\Annotation\ApiProperty;
     ],
     collectionOperations: [
         'get' => [
-            'path' => '/user',
+            'path' => '/users',
         ],
         'post' => [
-            'path' => '/user',
+            'path' => '/users',
         ],
     ],
     itemOperations: [
