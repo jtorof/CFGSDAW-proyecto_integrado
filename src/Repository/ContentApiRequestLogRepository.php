@@ -92,8 +92,6 @@ class ContentApiRequestLogRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        file_put_contents("SOMELOG.log", print_r($getCount, true).PHP_EOL, FILE_APPEND);
-
         return [
             'getCount' => $getCount,
             'postCount' => $postCount,
