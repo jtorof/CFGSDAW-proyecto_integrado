@@ -14,6 +14,7 @@ use App\Repository\ContentApiRequestLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
+use App\Service\HubPublisher;
 
 class ContentApiRequestSubscriber implements EventSubscriberInterface
 {
@@ -22,6 +23,7 @@ class ContentApiRequestSubscriber implements EventSubscriberInterface
         private RateLimiterFactory $contentApiLimiter,
         private EntityManagerInterface $entityManager,
         private HubInterface $hub,
+        private HubPublisher $hubPublisher,
     ) 
     {
     }
@@ -40,27 +42,33 @@ class ContentApiRequestSubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
     }
 
-    private function getUserStats(ContentApiRequestLogRepository $contentApiRequestLogRepository): array
-    {
-        return $contentApiRequestLogRepository->countRequestsOfEachType($this->security->getUser());
-    }
+    // private function getUserStats(ContentApiRequestLogRepository $contentApiRequestLogRepository): array
+    // {
+    //     return $contentApiRequestLogRepository->countRequestsOfEachType($this->security->getUser());
+    // }
 
-    private function publishUpdate(): void
-    {
-        $userIdentifier = $this->security->getUser()->getUserIdentifier();
-        $update = new Update(
-            "apiparapracticar.com/user/$userIdentifier",
-            json_encode([
-                "stats" => $this->getUserStats($this->entityManager->getRepository(ContentApiRequestLog::class)),
-                'apiKeyIsEnabled' => $this->security->getUser()->getApiTokens()[0]->getIsEnabled(),
-            ]),
-        );
+    // private function publishUpdate(): void
+    // {
+    //     $userIdentifier = $this->security->getUser()->getUserIdentifier();
+    //     $apiKeyIsEnabled = $this->security->getUser()->getApiTokens()[0]->getIsEnabled();
+    //     $retryAfter = null;
+    //     if (!$apiKeyIsEnabled) {
+    //         $limiter = $this->contentApiLimiter->create($userIdentifier);
+    //         $limit = $limiter->consume(1);
+    //         $retryAfter = $limit->getRetryAfter()->getTimestamp() - time();
+    //     }
+    //     $update = new Update(
+    //         "apiparapracticar.com/user/$userIdentifier",
+    //         json_encode([
+    //             'stats' => $this->getUserStats($this->entityManager->getRepository(ContentApiRequestLog::class)),
+    //             'apiKeyIsEnabled' => $apiKeyIsEnabled,
+    //             'retryAfter' => $retryAfter,
+    //         ]),
+    //     );
 
-        file_put_contents("TESTHUB.LOG", print_r(
-            $this->hub->getUrl()."-".
-            $this->hub->getPublicUrl(), true).PHP_EOL, FILE_APPEND);
-        $this->hub->publish($update);
-    }
+        
+    //     $this->hub->publish($update);
+    // }
 
 
     private function rateLimit(String $identifier, User $user = null): void
@@ -69,8 +77,9 @@ class ContentApiRequestSubscriber implements EventSubscriberInterface
         
         if (false === $limiter->consume(1)->isAccepted()) {
             if ($user) {
+                file_put_contents("RATELIMIT.LOG", "Entra".PHP_EOL, FILE_APPEND);
                 $this->setTokenDisabled($user->getApiTokens()[0]);
-                $this->publishUpdate();
+                $this->hubPublisher->publishUpdate();
             }
             throw new TooManyRequestsHttpException();
         }
@@ -115,7 +124,7 @@ class ContentApiRequestSubscriber implements EventSubscriberInterface
         $this->entityManager->persist($log);
         $this->entityManager->flush();
 
-        $this->publishUpdate();
+        $this->hubPublisher->publishUpdate();
 
         return;             
     }    

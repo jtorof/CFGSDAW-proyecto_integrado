@@ -8,9 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use App\Repository\ApiContentUserRepository;
 use App\Repository\ApiTokenRepository;
-use App\Repository\ContentApiRequestLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\ApiToken;
+use App\Service\HubPublisher;
 
 #[Route('/user/operations')]
 class UserOperationsController extends AbstractController
@@ -18,7 +18,8 @@ class UserOperationsController extends AbstractController
     public function __construct(
         private RateLimiterFactory $contentApiLimiter,
         private EntityManagerInterface $entityManager,
-        private $apiTokenPassphrase,
+        private $apiTokenPassphrase,  
+        private HubPublisher $hubPublisher,
     ) 
     {
     }
@@ -29,7 +30,7 @@ class UserOperationsController extends AbstractController
         return $this->redirectToRoute('app_main');
     }
 
-    #[Route('/reset-rate-limiter', name: 'reset_rate_limiter')]
+    #[Route('/reset-rate-limiter', name: 'reset_rate_limiter', methods: ['POST'])]
     public function resetRateLimiter(): Response
     {
         $limiter = $this->contentApiLimiter->create($this->getUser()->getUserIdentifier());
@@ -39,13 +40,15 @@ class UserOperationsController extends AbstractController
         $entityManager->persist($this->getUser());
         $entityManager->flush();
 
+        $this->hubPublisher->publishUpdate();
+
         return $this->json(
             [ 'message' => "Ya puede volver a acceder" ], 
             Response::HTTP_OK,
         );
     }
 
-    #[Route('/generate-data', name: 'generate_data')]
+    #[Route('/generate-data', name: 'generate_data', methods: ['POST'])]
     public function generateData(ApiContentUserRepository $apiContentUserRepository): Response
     {
         $loggedUser = $this->getUser();
@@ -58,11 +61,13 @@ class UserOperationsController extends AbstractController
             );           
         }
 
-        $apiContentUserRepository->cloneMasterData();
+        $apiContentUserRepository->cloneMasterData($this->getUser());
 
         $loggedUser->setHasApiDataCopy(true);
         $entityManager->persist($loggedUser);
         $entityManager->flush();
+
+        $this->hubPublisher->publishUpdate();
 
         return $this->json(
             [ 'message' => 'Ya dispone de los datos' ], 
@@ -70,7 +75,7 @@ class UserOperationsController extends AbstractController
         );
     }
 
-    #[Route('/reset-data', name: 'reset_data')]
+    #[Route('/reset-data', name: 'reset_data', methods: ['POST'])]
     public function resetData(ApiContentUserRepository $apiContentUserRepository): Response
     {
         $loggedUser = $this->getUser();
@@ -89,9 +94,9 @@ class UserOperationsController extends AbstractController
             );           
         }
 
-        $apiContentUserRepository->deleteUserData();
+        $apiContentUserRepository->deleteUserData($this->getUser());
         
-        $apiContentUserRepository->cloneMasterData();
+        $apiContentUserRepository->cloneMasterData($this->getUser());
 
         return $this->json(
             ['message' => 'Datos regenerados'], 
@@ -99,7 +104,7 @@ class UserOperationsController extends AbstractController
         );
     }
 
-    #[Route('/generate-api-key', name: 'generate_api_key')]
+    #[Route('/generate-api-key', name: 'generate_api_key', methods: ['POST'])]
     public function generateApiKey(ApiTokenRepository $apiTokenRepository): Response
     {
         $generatedApiTokens = $apiTokenRepository->findBy(
@@ -121,38 +126,42 @@ class UserOperationsController extends AbstractController
         $this->entityManager->persist($apiToken);
         $this->entityManager->flush();
 
+        $this->hubPublisher->publishUpdate();
+
         return $this->json(
             [ 'message' => 'Api Key generada' ], 
             Response::HTTP_OK,
         );
     }  
 
-    #[Route('/get-user-info', name: 'get_user_info')]
-    public function getUserInfo(ContentApiRequestLogRepository $contentApiRequestLogRepository): Response
-    {
-        $user = $this->getUser();              
-        if ($token = $user->getApiTokens()[0]) {            
-            $string = $token->getToken();       
-            $apiKeyIsEnabled = $token->getIsEnabled();
-            $iv = substr($string, 0, 16);
-            $token = substr($string, 16);
-            $decodedApiToken = openssl_decrypt($token, "aes-256-cbc", $this->apiTokenPassphrase, 0, $iv);
-        } else {
-            $iv = "";
-            $decodedApiToken = ""; 
-            $apiKeyIsEnabled = false; 
-        }
-        // file_put_contents('TOKENS.LOG', print_r($iv.$decodedApiToken, true).PHP_EOL, FILE_APPEND);
+    // #[Route('/get-user-info', name: 'get_user_info')]
+    // public function getUserInfo(ContentApiRequestLogRepository $contentApiRequestLogRepository): Response
+    // {
+    //     $user = $this->getUser();              
+    //     if ($token = $user->getApiTokens()[0]) {            
+    //         $string = $token->getToken();       
+    //         $apiKeyIsEnabled = $token->getIsEnabled();
+    //         $iv = substr($string, 0, 16);
+    //         $token = substr($string, 16);
+    //         $decodedApiToken = openssl_decrypt($token, "aes-256-cbc", $this->apiTokenPassphrase, 0, $iv);
+    //     } else {
+    //         $iv = "";
+    //         $decodedApiToken = ""; 
+    //         $apiKeyIsEnabled = false; 
+    //     }
+    //     // file_put_contents('TOKENS.LOG', print_r($iv.$decodedApiToken, true).PHP_EOL, FILE_APPEND);
 
-        $stats = $contentApiRequestLogRepository->countRequestsOfEachType($user);
+    //     $stats = $contentApiRequestLogRepository->countRequestsOfEachType($user);
+    //     $userHasApiDataCopy = $this->getUser()->getHasApiDataCopy();
 
-        return $this->json(
-            [ 
-                'stats' => $stats,
-                'apiKey' => $iv.$decodedApiToken,
-                'apiKeyIsEnabled' => $apiKeyIsEnabled,
-            ], 
-            Response::HTTP_OK,
-        );
-    }
+    //     return $this->json(
+    //         [ 
+    //             'stats' => $stats,
+    //             'apiKey' => $iv.$decodedApiToken,
+    //             'apiKeyIsEnabled' => $apiKeyIsEnabled,
+    //             'userHasApiDataCopy' => $userHasApiDataCopy,
+    //         ], 
+    //         Response::HTTP_OK,
+    //     );
+    // }
 }

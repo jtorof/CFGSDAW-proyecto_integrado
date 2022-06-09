@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ApiContentUser;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -45,21 +46,21 @@ class ApiContentUserRepository extends ServiceEntityRepository
         }
     }
 
-    public function cloneMasterData(): void
+    public function cloneMasterData(User $user): void
     {
         $masterData = $this->findBy(
             [ "user" => 1 ]
         );
         foreach ($masterData as $item) {
-            $this->_em->persist((clone $item)->setUser($this->getUser()));
+            $this->_em->persist((clone $item)->setUser($user));
             $this->_em->flush();
         }
     }
 
-    public function deleteUserData():void
+    public function deleteUserData(User $user):void
     {
         $userData = $this->findBy(
-            [ "user" => $this->getUser()->getId() ]
+            [ "user" => $user->getId() ]
         );
         foreach ($userData as $item) {
             $this->_em->remove($item);
