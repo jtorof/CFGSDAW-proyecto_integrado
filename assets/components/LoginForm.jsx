@@ -1,15 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
   MDBInput,
   MDBCol,
   MDBRow,
-  MDBCheckbox,
   MDBBtn,
-  MDBContainer,
-  MDBValidation,
   MDBValidationItem,
 } from 'mdb-react-ui-kit';
 import Alert from 'react-bootstrap/Alert';
@@ -37,8 +34,6 @@ const LoginForm = ({ prevLocation }) => {
   const context = useContext(UserContext);
   const navigate = useNavigate();
 
-  // console.log(prevLocation);
-
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -53,7 +48,7 @@ const LoginForm = ({ prevLocation }) => {
       try {
         actions.setStatus(undefined);
         const data = await fetchData('/login', 'POST', loginHeaders, loginData);
-        console.log(data);        
+        console.log(data);
         if ("error" in data) {
           actions.setSubmitting(false);
           actions.resetForm({
@@ -63,10 +58,9 @@ const LoginForm = ({ prevLocation }) => {
           });
           return;
         }
-        context.setGlobalUser(data);
-        //console.log(globalUser);
+        context.setGlobalUser(JSON.parse(data.user));
+        context.setGlobalUserInfo(data.userInfo);
         if (typeof prevLocation !== "undefined") {
-          console.log(prevLocation);
           navigate(prevLocation, { replace: true });
         }
       } catch (error) {
@@ -75,18 +69,6 @@ const LoginForm = ({ prevLocation }) => {
 
     },
   });
-
-  /* if ("email" in context.globalUser) {
-    return <Navigate to="/profile" replace />;
-  } */
-
-  /* useEffect(() => {
-    //console.log("useContext", context.globalUser);
-    if ("email" in context.globalUser) {
-      navigate('/profile');
-    }
-  }, []) */
-
 
   return (
     <>
@@ -129,6 +111,11 @@ const LoginForm = ({ prevLocation }) => {
               <MDBBtn type='submit' disabled={formik.isSubmitting}>
                 Iniciar sesión
               </MDBBtn>
+            </div>
+            <div className='text-center'>
+              <p>
+                ¿No tienes cuenta? <Link to="/registro">Crear cuenta</Link>
+              </p>
             </div>
           </form>
         </MDBCol>
