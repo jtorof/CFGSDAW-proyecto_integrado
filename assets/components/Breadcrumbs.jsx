@@ -61,7 +61,14 @@ const Breadcrumbs = () => {
 
 
   return (
-    showBreadcrumbs ? <MDBBreadcrumb aria-label="breadcrumb">Se encuentra en:{'\u00A0'}{generatedCrumbs}</MDBBreadcrumb> : null
+    showBreadcrumbs ?
+      <MDBBreadcrumb aria-label="breadcrumb">
+        Se encuentra en:&nbsp;
+        <MDBBreadcrumbItem>
+          <Link to={'/'}>APIParaPracticar</Link>
+        </MDBBreadcrumbItem>
+        {generatedCrumbs}
+      </MDBBreadcrumb> : null
   )
 }
 
