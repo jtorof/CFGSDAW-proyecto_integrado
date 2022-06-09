@@ -23,7 +23,8 @@ final class ApiContenUserPersister implements ContextAwareDataPersisterInterface
         private Security $security, 
         private UserRepository $userRepository,
         private ApiContentUserRepository $apiContentUserRepository,
-        private ApiContentAddressRepository $apiContentAddressRepository
+        private ApiContentAddressRepository $apiContentAddressRepository,        
+        private $apiContentUserLimit,
     )
     {
     }
@@ -50,7 +51,7 @@ final class ApiContenUserPersister implements ContextAwareDataPersisterInterface
                 [ "publicId" => "DESC" ],
             );
             
-            if (count($apiContentUserCollection) >= 15 ) { // TODO: Adjust object limit
+            if (count($apiContentUserCollection) >= $this->apiContentUserLimit ) {
                 return new JsonResponse(
                     [ "message" => "Error: Se ha alcanzado el límite de objetos permitidos. Elimine algunos para añadir objetos nuevos." ],
                     Response::HTTP_UNAUTHORIZED,
