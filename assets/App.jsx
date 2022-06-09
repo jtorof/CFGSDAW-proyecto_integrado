@@ -12,37 +12,64 @@ import { UserContext } from './helpers/context';
 import AccessRestricted from './routes/AccessRestricted';
 import RequireAuth from './components/RequireAuth';
 import HeaderTagsSetter from './components/HeaderTagsSetter';
+import AdvancedOptions from './routes/AdvancedOptions';
+import RequireNotAuth from './components/RequireNotAuth';
 
 const App = () => {
   const [globalUser, setGlobalUser] = useState({});
+  const [globalUserInfo, setGlobalUserInfo] = useState({});
 
   useEffect(() => {
     if (window.user) {
-      console.log(window.user);
+      // console.log(window.user);
+      // console.log(window.userInfo);
       setGlobalUser(window.user);
+      setGlobalUserInfo(window.userInfo);
     }
   }, []);
 
 
   return (
-    <UserContext.Provider value={{ globalUser, setGlobalUser }}>
+    <UserContext.Provider value={{ globalUser, setGlobalUser, globalUserInfo, setGlobalUserInfo }}>
       <HeaderTagsSetter />
       <Routes>
         <Route path="/" element={<Layout showBreadcrumbs={true} />}>
           <Route index element={<Home />} />
           <Route path="docs" element={<Documentation />} />
-          <Route path="login" element={!("email" in globalUser) ? <Login /> : <Navigate to="/profile" replace />} />
-          <Route path="signup" element={!("email" in globalUser) ? <SignUp /> : <Navigate to="/profile" replace />} />
-          {/* <Route path="login/login/login" element={<Login />} />
-          <Route path="login/:loginId" element={<Login />} /> */}
           <Route
-            path="profile"
+            path="login"
             element={
-              <RequireAuth>
-                <Profile />
-              </RequireAuth>
+              <RequireNotAuth>
+                <Login />
+              </RequireNotAuth>
             }
           />
+          <Route
+            path="registro"
+            element={
+              <RequireNotAuth>
+                <SignUp />
+              </RequireNotAuth>
+            }
+          />
+          <Route path="perfil" >
+            <Route
+              index
+              element={
+                <RequireAuth>
+                  <Profile />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="opciones-avanzadas"
+              element={
+                <RequireAuth>
+                  <AdvancedOptions />
+                </RequireAuth>
+              }
+            />
+          </Route>
         </Route>
         <Route path="admin" element={<AdminLayout />} >
 
