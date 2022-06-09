@@ -26,6 +26,7 @@
   "dependencies": {
     "formik": "^2.2.9",
     "mdb-react-ui-kit": "^3.0.0",
+    "prismjs": "^1.28.0",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-bootstrap": "^2.2.3",

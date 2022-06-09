@@ -5915,7 +5915,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.8.4":
+"prismjs@npm:^1.28.0, prismjs@npm:^1.8.4":
   version: 1.28.0
   resolution: "prismjs@npm:1.28.0"
   checksum: bde93fb2beb45b7243219fc53855f59ee54b3fa179f315e8f9d66244d756ef984462e10561bbdc6713d3d7e051852472d7c284f5794a8791eeaefea2fb910b16
@@ -7164,6 +7164,7 @@ __metadata:
     core-js: ^3.0.0
     formik: ^2.2.9
     mdb-react-ui-kit: ^3.0.0
+    prismjs: ^1.28.0
     prop-types: ^15.8.1
     react: 17.0.2
     react-bootstrap: ^2.2.3
