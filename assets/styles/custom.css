@@ -36,3 +36,9 @@ main {
 #rcc-confirm-button {
     all: unset
 }
+
+#site-logo-header {
+    height: 40px;
+    filter: opacity(75%);
+    margin-bottom: 6px;
+}
