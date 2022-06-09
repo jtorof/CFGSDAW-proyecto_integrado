@@ -27,17 +27,25 @@ const Navigation = ({ showBreadcrumbs }) => {
   const handleLogout = async (e) => {
     e.preventDefault();
     const data = await fetchData('/logout', 'POST', logoutHeaders);
-    console.log(data);
+    // console.log(data);
     context.setGlobalUser({});
   };
 
   return (
     <>
-      <MDBNavbar expand='md' dark bgColor='dark' className="sticky-xl-top">
+      <MDBNavbar expand='md' dark bgColor='dark'>
         <MDBContainer breakpoint="xl">
           <MDBNavbarBrand tag={Link} to='/'>
-            LOGO
+            <img src='/img/logo-white.svg' alt='Logo de APIParaPracticar' id='site-logo-header'></img>
           </MDBNavbarBrand>
+          {"email" in context.globalUser ?
+            <MDBNavbarNav fullWidth={false}>
+              <MDBNavbarItem className='navbar-text'>
+                Sesión iniciada como: {context.globalUser.email}
+              </MDBNavbarItem>
+            </MDBNavbarNav> :
+            null
+          }
           <MDBNavbarToggler
             aria-controls='navbarSupportedContent'
             aria-expanded='false'
@@ -61,12 +69,8 @@ const Navigation = ({ showBreadcrumbs }) => {
               </MDBNavbarItem>
               {"email" in context.globalUser ?
                 <>
-                  {/* <div className='vr'></div> */}
-                  <MDBNavbarItem className='navbar-text'>
-                    Sesión iniciada como: {context.globalUser.email}
-                  </MDBNavbarItem>
                   <MDBNavbarItem>
-                    <MDBNavbarLink tag={Link} to='profile'>
+                    <MDBNavbarLink tag={Link} to='perfil'>
                       Perfil
                     </MDBNavbarLink>
                   </MDBNavbarItem>
@@ -83,7 +87,7 @@ const Navigation = ({ showBreadcrumbs }) => {
                     </MDBNavbarLink>
                   </MDBNavbarItem>
                   <MDBNavbarItem>
-                    <MDBNavbarLink tag={Link} to='signup'>
+                    <MDBNavbarLink tag={Link} to='registro'>
                       Crear Cuenta
                     </MDBNavbarLink>
                   </MDBNavbarItem>
@@ -94,8 +98,8 @@ const Navigation = ({ showBreadcrumbs }) => {
         </MDBContainer>
       </MDBNavbar>
       <div className='p-4 text-center bg-light'>
-        <h1 className='mb-3'>Heading</h1>
-        <h4 className='mb-3 d-none d-md-block'>Subheading</h4>
+        <h1 className='mb-3'>APIParaPracticar</h1>
+        <h4 className='mb-3 d-none d-md-block'>API REST para aprender a atacar APIs</h4>
       </div>
       <MDBContainer breakpoint="xl">
         <MDBRow>
