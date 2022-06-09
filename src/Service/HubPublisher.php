@@ -34,6 +34,7 @@ class HubPublisher
             $decodedApiToken = openssl_decrypt($token, "aes-256-cbc", $this->apiTokenPassphrase, 0, $iv);
             $apiKeyIsEnabled = $apiKeyObject->getIsEnabled(); //
         } else {
+            $iv = "";
             $decodedApiToken = "";
             $apiKeyIsEnabled = "null";
         }
@@ -51,7 +52,7 @@ class HubPublisher
                 'stats' => $this->entityManager->getRepository(ContentApiRequestLog::class)->countRequestsOfEachType($user),
                 'apiKeyIsEnabled' => $apiKeyIsEnabled,
                 'retryAfter' => $retryAfter,
-                'apiKey' => $decodedApiToken,
+                'apiKey' => $iv . $decodedApiToken,
                 'userHasApiDataCopy' => $userHasApiDataCopy,
             ]),
         );
