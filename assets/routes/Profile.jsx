@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   MDBCol,
   MDBRow,
@@ -9,41 +10,44 @@ import {
   MDBContainer,
 } from 'mdb-react-ui-kit';
 import Alert from 'react-bootstrap/Alert';
+import { CopyBlock, nord } from 'react-code-blocks';
 import fetchData from '../helpers/fetchData';
 import { UserContext } from '../helpers/context';
+import Countdown from 'react-countdown';
 
 const subscriptionUrl = new URL(`http://localhost:59500/.well-known/mercure`);
 
 const Profile = () => {
   const context = useContext(UserContext);
-  const [dataIsReturned, setDataIsReturned] = useState(false);
+  const [showEverything, setShowEverything] = useState(false);
   const [awaitingResponse, setAwaitingResponse] = useState(false);
   const [userApiKey, setUserApiKey] = useState("");
   const [userApiKeyIsEnabled, setUserApiKeyIsEnabled] = useState(true);
+  const [userRetryAfter, setUserRetryAfter] = useState(0);
   const [userStats, setUserStats] = useState("");
+  const [userHasApiDataCopy, setUserHasApiDataCopy] = useState(true);
   const [showKey, setShowKey] = useState(false);
   const [topic, setTopic] = useState("");
 
-  const getUserInfo = async () => {
-    try {
-      const data = await fetchData('/user/operations/get-user-info', 'GET');
-      console.log(data);
-      if ("stats" in data) {
-        setUserApiKey(data.apiKey);
-        setUserApiKeyIsEnabled(data.apiKeyIsEnabled);
-        setUserStats(data.stats);
-        setDataIsReturned(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const getUserInfo = async () => {
+  //   try {
+  //     const data = await fetchData('/user/operations/get-user-info', 'GET');
+  //     console.log(data);
+  //     if ("stats" in data) {
+  //       setUserApiKey(data.apiKey);
+  //       setUserApiKeyIsEnabled(data.apiKeyIsEnabled);
+  //       setUserStats(data.stats);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   const generateApiKey = async () => {
     try {
-      const data = await fetchData('/user/operations/generate-api-key', 'GET');
+      const data = await fetchData('/user/operations/generate-api-key', 'POST');
       if (("message" in data) && data.message === "Api Key generada") {
-        getUserInfo(data);
+        // getUserInfo(data);
         setShowKey(true);
       }
     } catch (error) {
@@ -51,14 +55,30 @@ const Profile = () => {
     }
   }
 
-  const enableApiKey = async () => {
+  const enableApiKey = async (showLoading = true) => {
     try {
-      setAwaitingResponse(true);
-      const data = await fetchData('/user/operations/reset-rate-limiter', 'GET');
-      if (("message" in data) && data.message === "Ya puede volver a acceder") {
-        setUserApiKeyIsEnabled(true);
-        setAwaitingResponse(false);
+      // setUserRetryAfter(null);
+      if (showLoading) {
+        setAwaitingResponse(true);
       }
+      const data = await fetchData('/user/operations/reset-rate-limiter', 'POST');
+      if (("message" in data) && data.message === "Ya puede volver a acceder") {
+        // setUserApiKeyIsEnabled(true);
+        if (showLoading) {
+          setAwaitingResponse(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const generateData = async () => {
+    try {
+      const data = await fetchData('/user/operations/generate-data', 'POST');
+      // if (("message" in data) && data.message === "Ya dispone de los datos") {
+      //   setUserHasApiDataCopy(true);
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -66,15 +86,56 @@ const Profile = () => {
 
   const toggleShowKey = () => setShowKey(!showKey);
 
-  const addToClipboard = () => navigator.clipboard.writeText(userInfo.apiKey);
-
-  const apiKeyRow = () => {
-    if (userApiKey && userApiKey.length === 0) {
+  const titleRow = () => {
+    if (!userHasApiDataCopy) {
       return (
         <MDBRow>
-          <h3>API Key</h3>
+          <h2>
+            Perfil de Usuario - {context.globalUser?.email}
+          </h2>
+        </MDBRow>
+      )
+    } else {
+      return (
+        <MDBRow>
+          <h2 className='d-flex justify-content-between'>
+            Perfil de Usuario - {context.globalUser?.email}&nbsp;
+            <MDBBtn outline color='danger' tag={Link} to='opciones-avanzadas'>
+              <MDBIcon fas icon="cog" /> Opciones Avanzadas
+            </MDBBtn>
+          </h2>
+        </MDBRow>
+      )
+    }
+  }
+
+  const statsRow = () => {
+    if (!userStats || !("getCount" in userStats)) {
+      return null
+    }
+    return (
+      <MDBRow>
+        <h3 className='d-flex justify-content-between'>Estadísticas de peticiones</h3>
+        <MDBCol md="6">
+          <p>Peticiones GET: {userStats.getCount}</p>
+          <p>Peticiones POST: {userStats.postCount}</p>
+          <p>Peticiones DELETE: {userStats.deleteCount}</p>
+        </MDBCol>
+        <MDBCol md="6">
+          <p>Peticiones PUT: {userStats.putCount}</p>
+          <p>Peticiones PATCH: {userStats.patchCount}</p>
+        </MDBCol>
+      </MDBRow>
+    )
+  }
+
+  const apiKeyRow = () => {
+    if (userApiKey.length === 0) {
+      return (
+        <MDBRow>
+          <h3 className='d-flex justify-content-between'>API Key</h3>
           <Alert
-            variant='warning'
+            variant='info'
             className='d-flex align-items-center justify-content-center'
           >
             <p className='mb-0 me-3'>Aún no has tienes una API Key </p><MDBBtn outline onClick={generateApiKey}>Generar</MDBBtn>
@@ -84,15 +145,35 @@ const Profile = () => {
     }
     return (
       <MDBRow>
-        <h3>API Key <MDBBtn outline onClick={toggleShowKey}>{showKey ? "Ocultar" : "Mostrar"}</MDBBtn></h3>
+        <h3 className='d-flex justify-content-between'>API Key <MDBBtn outline onClick={toggleShowKey}>{showKey ? "Ocultar" : "Mostrar"}</MDBBtn></h3>
         <MDBCollapse show={showKey}>
-          <p>{userApiKey} <MDBBtn floating color='dark' onClick={addToClipboard}><MDBIcon fas icon="clipboard-check" size='lg' /></MDBBtn></p>
+          <CopyBlock
+            text={userApiKey}
+            showLineNumbers={false}
+            wrapLongLines={true}
+            codeBlock={true}
+            language="html"
+            theme={nord}
+          />
         </MDBCollapse>
       </MDBRow>)
   };
 
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      // console.log(completed);
+      // enableApiKey();
+      enableApiKey(false);
+      return null;
+    } else {
+      // Render a countdown
+      return <span>{hours}:{minutes}:{seconds} </span>;
+    }
+  };
+
   const enableApiKeyRow = () => {
-    if (userApiKeyIsEnabled) {
+    if (userApiKeyIsEnabled || userApiKeyIsEnabled == null) {
       return null
     }
     return (
@@ -102,7 +183,12 @@ const Profile = () => {
             variant='danger'
             className='d-flex align-items-center justify-content-center'
           >
-            <p className='mb-0 me-3'>API Key desactivada por exceso de peticiones. Puede esperar o bien: </p><MDBBtn outline onClick={enableApiKey}>Habilitar</MDBBtn>
+            <p className='mb-0 me-3'>API Key desactivada por exceso de peticiones. Puede esperar&nbsp;
+              {userRetryAfter === null ? null : <Countdown
+                date={Date.now() + userRetryAfter * 1000}
+                renderer={renderer}
+              />}
+              o bien: </p><MDBBtn outline onClick={enableApiKey}>Habilitar</MDBBtn>
           </Alert>
         </MDBRow>
         <MDBRow>
@@ -119,52 +205,42 @@ const Profile = () => {
   }
 
   const contentToRender = () => {
-    if (dataIsReturned) {
+    if (userHasApiDataCopy) {
       return (
         <>
-          <MDBRow>
-            <h2>
-              Perfil de Usuario - {context.globalUser?.email}
-            </h2>
-          </MDBRow>
-          <MDBRow>
-            <h3>Estadísticas de peticiones</h3>
-            <MDBCol md="6">
-              <p>Peticiones GET: {userStats.getCount}</p>
-              <p>Peticiones POST: {userStats.postCount}</p>
-              <p>Peticiones DELETE: {userStats.deleteCount}</p>
-            </MDBCol>
-            <MDBCol md="6">
-              <p>Peticiones PUT: {userStats.putCount}</p>
-              <p>Peticiones PATCH: {userStats.patchCount}</p>
-            </MDBCol>
-          </MDBRow>
+          {titleRow()}
           {enableApiKeyRow()}
+          {statsRow()}
           {apiKeyRow()}
         </>
       );
     }
     return (
       <>
-        <MDBRow>
-          <h2>
-            Perfil de Usuario - {context.globalUser?.email}
-          </h2>
-        </MDBRow>
+        {titleRow()}
         <MDBRow className='d-flex align-items-center justify-content-center'>
-          <MDBSpinner role='status'>
-            <span className='visually-hidden'>Cargando...</span>
-          </MDBSpinner>
+          <Alert
+            variant='info'
+            className='d-flex align-items-center justify-content-center'
+          >
+            <p className='mb-0 me-3'>Aún no ha obtenido su copia de los datos, que necesita para poder utilizar el servicio.</p><MDBBtn outline onClick={generateData}>Obtener datos</MDBBtn>
+          </Alert>
         </MDBRow>
       </>
     );
   }
 
   useEffect(() => {
-    getUserInfo();
-    if (context.globalUser?.email) {
-      // setTopic(context.globalUser?.email);
+    // console.log(context.globalUser);
+    // console.log(context.globalUserInfo);
+    if (("email" in context.globalUser) && (context.globalUserInfo !== null)) {
       setTopic(`apiparapracticar.com/user/${context.globalUser.email}`);
+      setUserApiKey(context.globalUserInfo.apiKey);
+      setUserApiKeyIsEnabled(context.globalUserInfo.apiKeyIsEnabled);
+      setUserRetryAfter(context.globalUserInfo.retryAfter);
+      setUserStats(context.globalUserInfo.stats);
+      setUserHasApiDataCopy(context.globalUserInfo.userHasApiDataCopy);
+      setShowEverything(true);
     }
   }, []);
 
@@ -173,8 +249,15 @@ const Profile = () => {
     const eventSource = new EventSource(subscriptionUrl);
     eventSource.onmessage = function ({ data }) {
       const parsedData = JSON.parse(data);
+      // console.log(parsedData);
+      setUserHasApiDataCopy(parsedData.userHasApiDataCopy);
+      setUserApiKey(parsedData.apiKey);
       setUserApiKeyIsEnabled(parsedData.apiKeyIsEnabled);
+      setUserRetryAfter(parsedData.retryAfter);
       setUserStats(parsedData.stats);
+      if (awaitingResponse) {
+        setAwaitingResponse(false); 
+      }
     };
 
     return () => {
@@ -184,7 +267,7 @@ const Profile = () => {
 
 
   return (
-    contentToRender()
+    showEverything ? contentToRender() : null
   )
 }
 
