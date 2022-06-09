@@ -27,7 +27,7 @@ const Layout = ({ showBreadcrumbs }) => {
         type="submit"
         disableStyles
         contentClasses='me-3'
-        debug={true}
+        debug={false}
       >
         Este sitio usa cookies y tal.
       </CookieConsent>
