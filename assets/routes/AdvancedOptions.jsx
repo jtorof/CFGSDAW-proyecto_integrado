@@ -33,6 +33,10 @@ const AdvancedOptions = () => {
     }
   }
 
+  const handleShowModal = () => {
+    setShowModal(!showModal)
+  }
+
   const handleResetData = () => {
     if (loading) return;    
     setLoading(true);
@@ -43,7 +47,7 @@ const AdvancedOptions = () => {
     <>
       <MDBRow>
         <h2 className='d-flex justify-content-between' >
-          Opciones Avanzadas - {context.globalUser?.email}&nbsp;
+          Opciones Avanzadas - {context.globalUser?.email}
           <MDBBtn outline tag={Link} to='../' >
             <MDBIcon fas icon="chevron-left" /> Volver a perfil
           </MDBBtn>
@@ -51,7 +55,7 @@ const AdvancedOptions = () => {
       </MDBRow>
       <MDBRow>
         <p className='d-flex justify-content-between align-items-center'>Resetear datos: se borran los datos actuales y se reemplazan por una nueva copia de los datos maestros. Las estadísticas permanecen.
-          <MDBBtn outline color='danger' onClick={() => setShowModal(!showModal)}>
+          <MDBBtn outline color='danger' onClick={handleShowModal}>
             <MDBIcon fas icon="exclamation-triangle" /> Resetear Datos
           </MDBBtn>
         </p>
@@ -61,11 +65,11 @@ const AdvancedOptions = () => {
           <MDBModalContent>
             <MDBModalHeader className='bg-danger text-white'>
               <MDBModalTitle>Resetear Datos</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={() => setShowModal(!showModal)}></MDBBtn>
+              <MDBBtn className='btn-close' color='none' onClick={handleShowModal}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>Estos cambios son irreversibles</MDBModalBody>
             <MDBModalFooter>
-              <MDBBtn outline color='info' onClick={() => setShowModal(!showModal)}>
+              <MDBBtn outline color='info' onClick={handleShowModal}>
                 Cancelar
               </MDBBtn>
               <MDBBtn color='danger' onClick={handleResetData}>
@@ -73,7 +77,7 @@ const AdvancedOptions = () => {
               </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
-          {loading ? <LoadingSpinner color={'dark'} classes={'mt-3'} /> : null}
+          {loading ? <LoadingSpinner color='dark' classes='mt-3' /> : null}
         </MDBModalDialog>
       </MDBModal>
     </>
