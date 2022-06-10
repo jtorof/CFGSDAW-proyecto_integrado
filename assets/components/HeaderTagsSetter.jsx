@@ -6,11 +6,12 @@ import routesNamesMap from '../helpers/routes';
 
 const HeaderTagsSetter = () => {
   const location = useLocation();
-  const route = location.pathname.substring(1);
+  const routeArray = location.pathname.split("/");
+  const lastRoute = routeArray[routeArray.length - 1];
 
   return (
     <Helmet>
-      <title>{ routesNamesMap.get(route) ? routesNamesMap.get(route) : `No encontrado` } | APIParaPracticar</title>
+      <title>{ routesNamesMap.get(lastRoute) ? routesNamesMap.get(lastRoute) : `No encontrado` } | APIParaPracticar</title>
     </Helmet>
   )
 }
