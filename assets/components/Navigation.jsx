@@ -33,7 +33,7 @@ const Navigation = ({ showBreadcrumbs }) => {
 
   return (
     <>
-      <MDBNavbar expand='md' dark bgColor='dark'>
+      <MDBNavbar expand='md' dark bgColor='dark' className="fixed-top">
         <MDBContainer breakpoint="xl">
           <MDBNavbarBrand tag={Link} to='/'>
             <img src='/img/logo-white.svg' alt='Logo de APIParaPracticar' id='site-logo-header'></img>
@@ -97,7 +97,7 @@ const Navigation = ({ showBreadcrumbs }) => {
           </MDBCollapse>
         </MDBContainer>
       </MDBNavbar>
-      <div className='p-4 text-center bg-light'>
+      <div className='text-center bg-light custom-header'>
         <h1 className='mb-3'>APIParaPracticar</h1>
         <h4 className='mb-3 d-none d-md-block'>API REST para aprender a atacar APIs</h4>
       </div>
