@@ -9,7 +9,7 @@ import {
 
 const Footer = () => {
   return (
-    <MDBFooter className='text-center p-3 mt-5' color='white' bgColor='dark'>
+    <MDBFooter className='text-center p-3' color='white' bgColor='dark'>
       <MDBListGroup flush >
         <MDBListGroupItem>APIParaPracticar - Jesús Toro 2022</MDBListGroupItem>
         <MDBListGroupItem><Link to='creditos'>Créditos</Link></MDBListGroupItem>
