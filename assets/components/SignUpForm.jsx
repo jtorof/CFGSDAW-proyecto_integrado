@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -14,6 +14,7 @@ import {
 } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
 import fetchData from '../helpers/fetchData';
+import { Alert } from 'react-bootstrap';
 
 const validationSchema = yup.object({
   email: yup
@@ -36,6 +37,8 @@ const validationSchema = yup.object({
 
 const SigUpForm = () => {
   const navigate = useNavigate();
+  const [variant, setVariant] = useState("danger");
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -47,18 +50,30 @@ const SigUpForm = () => {
     onSubmit: async (values, actions) => {
       //console.log(values);
       try {
+        actions.setStatus(undefined);
         const data = await fetchData('/register', 'POST', {}, values);
         console.log(data);
         if (data.message === "Account successfully created") {
-          alert("Cuenta creada con éxito");
-          navigate('/login')
+          setVariant("success");
+          actions.resetForm({
+            status: {
+              message: "Cuenta creada con éxito"
+            }
+          });
+          setTimeout(() => {
+            navigate('/login')
+          }, 2000);
           return;
         }
 
         if (data.message !== 'Account successfully created') {
-          alert("Ha habido un error, inténtelo más tarde");
+          setVariant("danger");
           actions.setSubmitting(false);
-          actions.resetForm();
+          actions.resetForm({
+            status: {
+              message: "Ha habido un error"
+            }
+          });
           return;
         }
 
@@ -73,6 +88,9 @@ const SigUpForm = () => {
       <MDBRow center>
         <MDBCol md='6'>
           <h2>Formulario de Registro</h2>
+          {formik.status && formik.status.message ?
+            <Alert variant={variant}>{formik.status.message}</Alert>
+            : null}
           <form onSubmit={formik.handleSubmit} className='row g-4'>
             <MDBValidationItem feedback={formik.errors.email} invalid>
               <MDBInput
