@@ -62,6 +62,10 @@ footer ul {
     margin: 0 auto;
 }
 
+.btn {
+    font-family: var(--mdb-font-roboto);
+}
+
 @include media-breakpoint-up(md) {
     main .row {
         margin-top: 4rem;
