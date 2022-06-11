@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import AdminLayout from './routes/AdminLayout';
 import Documentation from './routes/Documentation';
 import Home from './routes/Home';
 import Layout from './routes/Layout';
@@ -14,7 +13,7 @@ import RequireAuth from './components/RequireAuth';
 import HeaderTagsSetter from './components/HeaderTagsSetter';
 import AdvancedOptions from './routes/AdvancedOptions';
 import RequireNotAuth from './components/RequireNotAuth';
-import Credits from './components/Credits';
+import Credits from './routes/Credits';
 
 const App = () => {
   const [globalUser, setGlobalUser] = useState({});
