@@ -15,7 +15,8 @@ import fetchData from '../helpers/fetchData';
 import { UserContext } from '../helpers/context';
 import Countdown from 'react-countdown';
 
-const subscriptionUrl = new URL(`http://localhost:59500/.well-known/mercure`);
+// const subscriptionUrl = new URL(`http://localhost:59500/.well-known/mercure`);
+const subscriptionUrl = new URL(`https://apiparapracticar.ddns.net/mercure-hub/.well-known/mercure`);
 
 const Profile = () => {
   const context = useContext(UserContext);
