@@ -21,11 +21,11 @@ const Profile = () => {
   const context = useContext(UserContext);
   const [showEverything, setShowEverything] = useState(false);
   const [awaitingResponse, setAwaitingResponse] = useState(false);
-  const [userApiKey, setUserApiKey] = useState("");
-  const [userApiKeyIsEnabled, setUserApiKeyIsEnabled] = useState(true);
-  const [userRetryAfter, setUserRetryAfter] = useState(0);
-  const [userStats, setUserStats] = useState("");
-  const [userHasApiDataCopy, setUserHasApiDataCopy] = useState(true);
+  const [apiKey, setApiKey] = useState("");
+  const [apiKeyIsEnabled, setApiKeyIsEnabled] = useState(true);
+  const [retryAfter, setRetryAfter] = useState(0);
+  const [stats, setStats] = useState("");
+  const [userHasApiDataCopy, setUserHasApiDataCopy] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [topic, setTopic] = useState("");
 
@@ -34,9 +34,9 @@ const Profile = () => {
   //     const data = await fetchData('/user/operations/get-user-info', 'GET');
   //     console.log(data);
   //     if ("stats" in data) {
-  //       setUserApiKey(data.apiKey);
-  //       setUserApiKeyIsEnabled(data.apiKeyIsEnabled);
-  //       setUserStats(data.stats);
+  //       setApiKey(data.apiKey);
+  //       setApiKeyIsEnabled(data.apiKeyIsEnabled);
+  //       setStats(data.stats);
   //     }
   //   } catch (error) {
   //     console.log(error);
@@ -57,13 +57,13 @@ const Profile = () => {
 
   const enableApiKey = async (showLoading = true) => {
     try {
-      // setUserRetryAfter(null);
+      // setRetryAfter(null);
       if (showLoading) {
         setAwaitingResponse(true);
       }
       const data = await fetchData('/user/operations/reset-rate-limiter', 'POST');
       if (("message" in data) && data.message === "Ya puede volver a acceder") {
-        // setUserApiKeyIsEnabled(true);
+        // setApiKeyIsEnabled(true);
         if (showLoading) {
           setAwaitingResponse(false);
         }
@@ -110,27 +110,27 @@ const Profile = () => {
   }
 
   const statsRow = () => {
-    if (!userStats || !("getCount" in userStats)) {
+    if (!stats || !("getCount" in stats)) {
       return null
     }
     return (
       <MDBRow>
         <h3 className='d-flex justify-content-between'>Estadísticas de peticiones</h3>
         <MDBCol md="6">
-          <p>Peticiones GET: {userStats.getCount}</p>
-          <p>Peticiones POST: {userStats.postCount}</p>
-          <p>Peticiones DELETE: {userStats.deleteCount}</p>
+          <p>Peticiones GET: {stats.getCount}</p>
+          <p>Peticiones POST: {stats.postCount}</p>
+          <p>Peticiones DELETE: {stats.deleteCount}</p>
         </MDBCol>
         <MDBCol md="6">
-          <p>Peticiones PUT: {userStats.putCount}</p>
-          <p>Peticiones PATCH: {userStats.patchCount}</p>
+          <p>Peticiones PUT: {stats.putCount}</p>
+          <p>Peticiones PATCH: {stats.patchCount}</p>
         </MDBCol>
       </MDBRow>
     )
   }
 
   const apiKeyRow = () => {
-    if (userApiKey.length === 0) {
+    if (apiKey.length === 0) {
       return (
         <MDBRow>
           <h3 className='d-flex justify-content-between'>API Key</h3>
@@ -138,17 +138,27 @@ const Profile = () => {
             variant='info'
             className='d-flex align-items-center justify-content-center'
           >
-            <p className='mb-0 me-3'>Aún no has tienes una API Key </p><MDBBtn outline onClick={generateApiKey}>Generar</MDBBtn>
+            <p className='mb-0 me-3'>Aún no has tienes una API Key </p>
+            <MDBBtn outline onClick={generateApiKey}>
+              <MDBIcon fas icon="plus-square" />
+              &nbsp;Generar
+            </MDBBtn>
           </Alert>
         </MDBRow>
       )
     }
     return (
       <MDBRow>
-        <h3 className='d-flex justify-content-between'>API Key <MDBBtn outline onClick={toggleShowKey}>{showKey ? "Ocultar" : "Mostrar"}</MDBBtn></h3>
+        <h3 className='d-flex justify-content-between'>
+          API Key
+          <MDBBtn outline onClick={toggleShowKey}>
+            <MDBIcon fas icon={showKey ? "eye-slash" : "eye"} />
+            &nbsp;{showKey ? "Ocultar" : "Mostrar"}
+          </MDBBtn>
+        </h3>
         <MDBCollapse show={showKey}>
           <CopyBlock
-            text={userApiKey}
+            text={apiKey}
             showLineNumbers={false}
             wrapLongLines={true}
             codeBlock={true}
@@ -173,7 +183,7 @@ const Profile = () => {
   };
 
   const enableApiKeyRow = () => {
-    if (userApiKeyIsEnabled || userApiKeyIsEnabled == null) {
+    if (apiKeyIsEnabled || apiKeyIsEnabled == null) {
       return null
     }
     return (
@@ -184,8 +194,8 @@ const Profile = () => {
             className='d-flex align-items-center justify-content-center'
           >
             <p className='mb-0 me-3'>API Key desactivada por exceso de peticiones. Puede esperar&nbsp;
-              {userRetryAfter === null ? null : <Countdown
-                date={Date.now() + userRetryAfter * 1000}
+              {retryAfter === null ? null : <Countdown
+                date={Date.now() + retryAfter * 1000}
                 renderer={renderer}
               />}
               o bien: </p><MDBBtn outline onClick={enableApiKey}>Habilitar</MDBBtn>
@@ -223,7 +233,11 @@ const Profile = () => {
             variant='info'
             className='d-flex align-items-center justify-content-center'
           >
-            <p className='mb-0 me-3'>Aún no ha obtenido su copia de los datos, que necesita para poder utilizar el servicio.</p><MDBBtn outline onClick={generateData}>Obtener datos</MDBBtn>
+            <p className='mb-0 me-3'>Aún no ha obtenido su copia de los datos, que necesita para poder utilizar el servicio.</p>
+            <MDBBtn outline onClick={generateData}>
+              <MDBIcon fas icon="clone" />
+              &nbsp;Obtener datos
+            </MDBBtn>
           </Alert>
         </MDBRow>
       </>
@@ -234,29 +248,33 @@ const Profile = () => {
     // console.log(context.globalUser);
     // console.log(context.globalUserInfo);
     if (("email" in context.globalUser) && (context.globalUserInfo !== null)) {
+      // console.log("settting state from context");
       setTopic(`apiparapracticar.com/user/${context.globalUser.email}`);
-      setUserApiKey(context.globalUserInfo.apiKey);
-      setUserApiKeyIsEnabled(context.globalUserInfo.apiKeyIsEnabled);
-      setUserRetryAfter(context.globalUserInfo.retryAfter);
-      setUserStats(context.globalUserInfo.stats);
+      setApiKey(context.globalUserInfo.apiKey);
+      setApiKeyIsEnabled(context.globalUserInfo.apiKeyIsEnabled);
+      setRetryAfter(context.globalUserInfo.retryAfter);
+      setStats(context.globalUserInfo.stats);
       setUserHasApiDataCopy(context.globalUserInfo.userHasApiDataCopy);
       setShowEverything(true);
     }
   }, []);
 
   useEffect(() => {
+    if (topic.length === 0) {
+      return
+    }
     subscriptionUrl.searchParams.append(`topic`, topic);
     const eventSource = new EventSource(subscriptionUrl);
     eventSource.onmessage = function ({ data }) {
       const parsedData = JSON.parse(data);
       // console.log(parsedData);
       setUserHasApiDataCopy(parsedData.userHasApiDataCopy);
-      setUserApiKey(parsedData.apiKey);
-      setUserApiKeyIsEnabled(parsedData.apiKeyIsEnabled);
-      setUserRetryAfter(parsedData.retryAfter);
-      setUserStats(parsedData.stats);
+      setApiKey(parsedData.apiKey);
+      setApiKeyIsEnabled(parsedData.apiKeyIsEnabled);
+      setRetryAfter(parsedData.retryAfter);
+      setStats(parsedData.stats);
       if (awaitingResponse) {
-        setAwaitingResponse(false); 
+        setAwaitingResponse(false);
       }
     };
 
@@ -265,6 +283,40 @@ const Profile = () => {
     }
   }, [topic]);
 
+  useEffect(() => {
+    context.setGlobalUserInfo({
+      ...context.globalUserInfo,
+      apiKey: apiKey
+    });
+  }, [apiKey])
+
+  useEffect(() => {
+    context.setGlobalUserInfo({
+      ...context.globalUserInfo,
+      apiKeyIsEnabled: apiKeyIsEnabled
+    });
+  }, [apiKeyIsEnabled])
+
+  useEffect(() => {
+    context.setGlobalUserInfo({
+      ...context.globalUserInfo,
+      userHasApiDataCopy: userHasApiDataCopy
+    });
+  }, [userHasApiDataCopy])
+
+  useEffect(() => {
+    context.setGlobalUserInfo({
+      ...context.globalUserInfo,
+      retryAfter: retryAfter
+    });
+  }, [retryAfter])
+
+  useEffect(() => {
+    context.setGlobalUserInfo({
+      ...context.globalUserInfo,
+      stats: stats
+    });
+  }, [stats])
 
   return (
     showEverything ? contentToRender() : null
