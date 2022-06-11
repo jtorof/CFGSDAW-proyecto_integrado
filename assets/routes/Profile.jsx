@@ -15,7 +15,7 @@ import fetchData from '../helpers/fetchData';
 import { UserContext } from '../helpers/context';
 import Countdown from 'react-countdown';
 
-const subscriptionUrl = new URL(`https://apiparapracticar.ddns.net/mercure-hub/.well-known/mercure`);
+const subscriptionUrl = new URL(`http://localhost:59500/.well-known/mercure`);
 
 const Profile = () => {
   const context = useContext(UserContext);
@@ -27,6 +27,7 @@ const Profile = () => {
   const [stats, setStats] = useState("");
   const [userHasApiDataCopy, setUserHasApiDataCopy] = useState(false);
   const [showKey, setShowKey] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [topic, setTopic] = useState("");
 
   // const getUserInfo = async () => {
@@ -40,22 +41,30 @@ const Profile = () => {
   //     }
   //   } catch (error) {
   //     console.log(error);
+  //     setShowAlert(true);
   //   }
   // }
 
   const generateApiKey = async () => {
+    setShowAlert(false);
+    setAwaitingResponse(true);
     try {
       const data = await fetchData('/user/operations/generate-api-key', 'POST');
       if (("message" in data) && data.message === "Api Key generada") {
         // getUserInfo(data);
         setShowKey(true);
+      } else {
+        setShowAlert(true);
       }
     } catch (error) {
-      console.log(error);
+      setShowAlert(true);
+      // console.log(error);
     }
+    setAwaitingResponse(false);
   }
 
   const enableApiKey = async (showLoading = true) => {
+    setShowAlert(false);
     try {
       // setRetryAfter(null);
       if (showLoading) {
@@ -67,29 +76,56 @@ const Profile = () => {
         if (showLoading) {
           setAwaitingResponse(false);
         }
+      } else {
+        setShowAlert(true);
       }
     } catch (error) {
-      console.log(error);
+      setShowAlert(true);
+      // console.log(error);
     }
   }
 
   const generateData = async () => {
+    setShowAlert(false);
+    setAwaitingResponse(true);
     try {
       const data = await fetchData('/user/operations/generate-data', 'POST');
-      // if (("message" in data) && data.message === "Ya dispone de los datos") {
-      //   setUserHasApiDataCopy(true);
-      // }
+      if (("message" in data) && data.message === "Ya dispone de los datos") { //Legacy, left in case we go back to not using mercure
+        // setUserHasApiDataCopy(true);
+        // return;
+      } else {
+        setShowAlert(true);
+      }
     } catch (error) {
-      console.log(error);
+      setShowAlert(true);
+      // console.log(error);
     }
+    setAwaitingResponse(false);
   }
 
   const toggleShowKey = () => setShowKey(!showKey);
 
+  const awaitingResponseRow = () => {
+    if (awaitingResponse) {
+      return (
+        <MDBRow className='my-0'>
+          <MDBCollapse show={true}>
+            <MDBContainer className='d-flex align-items-center justify-content-center'>
+              <MDBSpinner role='status'>
+                <span className='visually-hidden'>Cargando...</span>
+              </MDBSpinner>
+            </MDBContainer>
+          </MDBCollapse>
+        </MDBRow>
+      )
+    }
+    return null;
+  }
+
   const titleRow = () => {
     if (!userHasApiDataCopy) {
       return (
-        <MDBRow>
+        <MDBRow className='mb-0'>
           <h2>
             Perfil de Usuario - {context.globalUser?.email}
           </h2>
@@ -97,7 +133,7 @@ const Profile = () => {
       )
     } else {
       return (
-        <MDBRow>
+        <MDBRow className='mb-0'>
           <h2 className='d-flex justify-content-between'>
             Perfil de Usuario - {context.globalUser?.email}&nbsp;
             <MDBBtn outline color='danger' tag={Link} to='opciones-avanzadas'>
@@ -109,12 +145,28 @@ const Profile = () => {
     }
   }
 
+  const alertRow = () => {
+    if (!showAlert) {
+      return null
+    }
+    return (
+      <MDBRow className='my-0'>
+        <Alert
+          variant='danger'
+          className='d-flex align-items-center justify-content-center'
+        >
+          Ha habido un error
+        </Alert>
+      </MDBRow>
+    )
+  }
+
   const statsRow = () => {
     if (!stats || !("getCount" in stats)) {
       return null
     }
     return (
-      <MDBRow>
+      <MDBRow className='mt-3'>
         <h3 className='d-flex justify-content-between'>Estadísticas de peticiones</h3>
         <MDBCol md="6">
           <p>Peticiones GET: {stats.getCount}</p>
@@ -132,19 +184,22 @@ const Profile = () => {
   const apiKeyRow = () => {
     if (apiKey.length === 0) {
       return (
-        <MDBRow>
-          <h3 className='d-flex justify-content-between'>API Key</h3>
-          <Alert
-            variant='info'
-            className='d-flex align-items-center justify-content-center'
-          >
-            <p className='mb-0 me-3'>Aún no has tienes una API Key </p>
-            <MDBBtn outline onClick={generateApiKey}>
-              <MDBIcon fas icon="plus-square" />
-              &nbsp;Generar
-            </MDBBtn>
-          </Alert>
-        </MDBRow>
+        <>
+          <MDBRow className='mb-0'>
+            <h3 className='d-flex justify-content-between'>API Key</h3>
+            <Alert
+              variant='info'
+              className='d-flex align-items-center justify-content-center'
+            >
+              <p className='mb-0 me-3'>Aún no has tienes una API Key </p>
+              <MDBBtn outline onClick={generateApiKey}>
+                <MDBIcon fas icon="plus-square" />
+                &nbsp;Generar
+              </MDBBtn>
+            </Alert>
+          </MDBRow>
+          {awaitingResponseRow()}
+        </>
       )
     }
     return (
@@ -188,7 +243,7 @@ const Profile = () => {
     }
     return (
       <>
-        <MDBRow>
+        <MDBRow className='my-0'>
           <Alert
             variant='danger'
             className='d-flex align-items-center justify-content-center'
@@ -201,15 +256,7 @@ const Profile = () => {
               o bien: </p><MDBBtn outline onClick={enableApiKey}>Habilitar</MDBBtn>
           </Alert>
         </MDBRow>
-        <MDBRow>
-          <MDBCollapse show={awaitingResponse}>
-            <MDBContainer className='d-flex align-items-center justify-content-center'>
-              <MDBSpinner role='status'>
-                <span className='visually-hidden'>Cargando...</span>
-              </MDBSpinner>
-            </MDBContainer>
-          </MDBCollapse>
-        </MDBRow>
+        {awaitingResponseRow()}
       </>
     )
   }
@@ -219,6 +266,7 @@ const Profile = () => {
       return (
         <>
           {titleRow()}
+          {alertRow()}
           {enableApiKeyRow()}
           {statsRow()}
           {apiKeyRow()}
@@ -228,7 +276,8 @@ const Profile = () => {
     return (
       <>
         {titleRow()}
-        <MDBRow className='d-flex align-items-center justify-content-center'>
+        {alertRow()}
+        <MDBRow className='my-0'>
           <Alert
             variant='info'
             className='d-flex align-items-center justify-content-center'
@@ -240,6 +289,7 @@ const Profile = () => {
             </MDBBtn>
           </Alert>
         </MDBRow>
+        {awaitingResponseRow()}
       </>
     );
   }
@@ -273,9 +323,9 @@ const Profile = () => {
       setApiKeyIsEnabled(parsedData.apiKeyIsEnabled);
       setRetryAfter(parsedData.retryAfter);
       setStats(parsedData.stats);
-      if (awaitingResponse) {
-        setAwaitingResponse(false);
-      }
+      // if (awaitingResponse) {
+      setAwaitingResponse(false);
+      // }
     };
 
     return () => {
