@@ -37,16 +37,16 @@ use ApiPlatform\Core\Annotation\ApiProperty;
     ],
     itemOperations: [
         'get' => [
-            'path' => '/user/{publicId}',
+            'path' => '/users/{publicId}',
         ],
         'put' => [
-            'path' => '/user/{publicId}',
+            'path' => '/users/{publicId}',
         ],
         'patch' => [
-            'path' => '/user/{publicId}',
+            'path' => '/users/{publicId}',
         ],
         'delete' => [
-            'path' => '/user/{publicId}',
+            'path' => '/users/{publicId}',
         ],
     ],
 )]
