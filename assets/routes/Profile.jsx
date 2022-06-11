@@ -46,6 +46,24 @@ const Profile = () => {
   //   }
   // }
 
+  const generateData = async () => {
+    setShowAlert(false);
+    setAwaitingResponse(true);
+    try {
+      const data = await fetchData('/user/operations/generate-data', 'POST');
+      if (("message" in data) && data.message === "Ya dispone de los datos") { //Legacy, left in case we go back to not using mercure
+        // setUserHasApiDataCopy(true);
+        // return;
+      } else {
+        setShowAlert(true);
+      }
+    } catch (error) {
+      setShowAlert(true);
+      // console.log(error);
+    }
+    setAwaitingResponse(false);
+  }
+
   const generateApiKey = async () => {
     setShowAlert(false);
     setAwaitingResponse(true);
@@ -84,24 +102,6 @@ const Profile = () => {
       setShowAlert(true);
       // console.log(error);
     }
-  }
-
-  const generateData = async () => {
-    setShowAlert(false);
-    setAwaitingResponse(true);
-    try {
-      const data = await fetchData('/user/operations/generate-data', 'POST');
-      if (("message" in data) && data.message === "Ya dispone de los datos") { //Legacy, left in case we go back to not using mercure
-        // setUserHasApiDataCopy(true);
-        // return;
-      } else {
-        setShowAlert(true);
-      }
-    } catch (error) {
-      setShowAlert(true);
-      // console.log(error);
-    }
-    setAwaitingResponse(false);
   }
 
   const toggleShowKey = () => setShowKey(!showKey);
@@ -167,7 +167,7 @@ const Profile = () => {
       return null
     }
     return (
-      <MDBRow className='mt-3'>
+      <MDBRow className={!apiKeyIsEnabled ? 'mt-0' : 'mt-3'}>
         <h3 className='d-flex justify-content-between'>Estadísticas de peticiones</h3>
         <MDBCol md="6">
           <p>Peticiones GET: {stats.getCount}</p>
