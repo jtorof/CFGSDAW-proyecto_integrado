@@ -14,6 +14,7 @@ import RequireAuth from './components/RequireAuth';
 import HeaderTagsSetter from './components/HeaderTagsSetter';
 import AdvancedOptions from './routes/AdvancedOptions';
 import RequireNotAuth from './components/RequireNotAuth';
+import Credits from './components/Credits';
 
 const App = () => {
   const [globalUser, setGlobalUser] = useState({});
@@ -70,10 +71,10 @@ const App = () => {
               }
             />
           </Route>
+          <Route path="creditos" element={<Credits />} />
         </Route>
-        <Route path="admin" element={<AdminLayout />} >
-
-        </Route>
+        {/* <Route path="admin" element={<AdminLayout />} >
+        </Route> */}
         <Route path="*" element={<Layout showBreadcrumbs={false} />} >
           <Route path="acceso-restringido" element={<AccessRestricted />} />
           <Route path="*" element={<NotFound />} />

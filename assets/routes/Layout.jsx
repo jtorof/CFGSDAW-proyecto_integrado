@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Navigation from '../components/Navigation';
 import { MDBContainer, MDBBtn } from 'mdb-react-ui-kit';
 import CookieConsent from 'react-cookie-consent';
+import Footer from '../components/Footer';
 
 const Layout = ({ showBreadcrumbs }) => {
   return (
@@ -15,7 +16,7 @@ const Layout = ({ showBreadcrumbs }) => {
           <Outlet />
         </MDBContainer>
       </main>
-      <footer>FOOTER</footer>
+      <Footer />
       <CookieConsent
         containerClasses='alert alert-primary d-flex align-items-center justify-content-center fixed-bottom mb-0'
         buttonText={
