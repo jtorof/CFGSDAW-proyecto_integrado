@@ -98,14 +98,10 @@ const Navigation = ({ showBreadcrumbs }) => {
         </MDBContainer>
       </MDBNavbar>
       <div className='text-center bg-light custom-header'>
-        <h1 className='mb-3'>APIParaPracticar</h1>
+        <h1 className='mb-3 pt-1'>APIParaPracticar</h1>
         <h4 className='mb-3 d-none d-md-block'>API REST para aprender a atacar APIs</h4>
       </div>
-      <MDBContainer breakpoint="xl">
-        <MDBRow>
-          {showBreadcrumbs ? <Breadcrumbs /> : null}
-        </MDBRow>
-      </MDBContainer>
+      {showBreadcrumbs ? <Breadcrumbs /> : null}
     </>
   )
 }

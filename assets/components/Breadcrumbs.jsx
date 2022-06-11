@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
+  MDBContainer,
+  MDBRow,
   MDBBreadcrumb,
-  MDBBreadcrumbItem
+  MDBBreadcrumbItem,
 } from 'mdb-react-ui-kit'
 import routesNamesMap from '../helpers/routes'
 
@@ -62,13 +64,17 @@ const Breadcrumbs = () => {
 
   return (
     showBreadcrumbs ?
-      <MDBBreadcrumb aria-label="breadcrumb">
-        Se encuentra en:&nbsp;
-        <MDBBreadcrumbItem>
-          <Link to={'/'}>APIParaPracticar</Link>
-        </MDBBreadcrumbItem>
-        {generatedCrumbs}
-      </MDBBreadcrumb> : null
+      <MDBContainer breakpoint="xl">
+        <MDBRow>
+          <MDBBreadcrumb aria-label="breadcrumb">
+            Se encuentra en:&nbsp;
+            <MDBBreadcrumbItem>
+              <Link to={'/'}>APIParaPracticar</Link>
+            </MDBBreadcrumbItem>
+            {generatedCrumbs}
+          </MDBBreadcrumb>
+        </MDBRow>
+      </MDBContainer> : null
   )
 }
 
