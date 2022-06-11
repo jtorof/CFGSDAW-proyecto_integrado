@@ -33,3 +33,41 @@ code {
     margin-top: 0.25rem;
     margin-bottom: 1rem;
 }
+
+.custom-header {
+    padding: 100px 24px 24px;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-family: 'Comfortaa', cursive;
+}
+
+h2, h3, h4 {
+    font-family: 'Roboto Slab', serif;
+}
+
+footer .list-group-item {
+    color: unset;
+    background-color: unset;
+    border-color: rgba($color: white, $alpha: 0.55)
+}
+
+footer ul {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+@include media-breakpoint-up(md) {
+    main .row {
+        margin-top: 4rem;
+        margin-bottom: 4rem;
+    }
+    main .row:first-of-type {
+        margin-top: 1rem;
+    }    
+}
