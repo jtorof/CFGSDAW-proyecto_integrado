@@ -41,7 +41,7 @@ const Navigation = ({ showBreadcrumbs }) => {
           {"email" in context.globalUser ?
             <MDBNavbarNav fullWidth={false}>
               <MDBNavbarItem className='navbar-text'>
-                Sesión iniciada como: {context.globalUser.email}
+                <span className='d-none d-md-inline-block'>Sesión iniciada como: </span><span></span>{context.globalUser.email}
               </MDBNavbarItem>
             </MDBNavbarNav> :
             null
