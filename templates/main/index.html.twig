@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <script>
-        window.user = JSON.parse('{{ user|raw }}');     //TODO : probably can declare these as const
-        console.log(user);
-        window.userInfo = JSON.parse('{{ userInfo|raw }}');
-        console.log(userInfo);
-    </script>
-    <div id="app"></div>
+<script>
+    window.user = JSON.parse('{{ user|raw }}');     //TODO : probably can declare these as const
+    // console.log(user);
+    window.userInfo = JSON.parse('{{ userInfo|raw }}');
+        // console.log(userInfo);
+</script>
+<div id="app"></div>
 {% endblock %}
