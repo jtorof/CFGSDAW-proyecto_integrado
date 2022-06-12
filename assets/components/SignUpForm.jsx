@@ -91,7 +91,7 @@ const SigUpForm = () => {
           {formik.status && formik.status.message ?
             <Alert variant={variant}>{formik.status.message}</Alert>
             : null}
-          <form onSubmit={formik.handleSubmit} className='row g-4'>
+          <form onSubmit={formik.handleSubmit} className='row g-4 mb-0'>
             <MDBValidationItem feedback={formik.errors.email} invalid>
               <MDBInput
                 name="email"
