@@ -77,7 +77,6 @@ class ContentApiRequestSubscriber implements EventSubscriberInterface
         
         if (false === $limiter->consume(1)->isAccepted()) {
             if ($user) {
-                file_put_contents("RATELIMIT.LOG", "Entra".PHP_EOL, FILE_APPEND);
                 $this->setTokenDisabled($user->getApiTokens()[0]);
                 $this->hubPublisher->publishUpdate();
             }
