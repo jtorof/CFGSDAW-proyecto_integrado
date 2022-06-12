@@ -112,6 +112,10 @@ footer ul {
     // min-height: 60vh;
 }
 
+#not-found-image {
+    width: 100%;
+}
+
 @include media-breakpoint-up(md) {
     main .row {
         margin-top: 4rem;
@@ -121,4 +125,15 @@ footer ul {
     main .row:first-of-type {
         margin-top: 1rem;
     }
+
+    #not-found-image {
+        width: 600px;
+    }
+}
+
+@media (min-width: 2560px) {
+    #not-found-image {
+        height: 70vh;
+        width: auto;
+    }    
 }
