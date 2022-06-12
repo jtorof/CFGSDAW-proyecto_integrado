@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { UserContext } from './helpers/context';
 import Documentation from './routes/Documentation';
 import Home from './routes/Home';
 import Layout from './routes/Layout';
@@ -7,8 +8,6 @@ import Login from './routes/Login';
 import NotFound from './routes/NotFound';
 import SignUp from './routes/SignUp';
 import Profile from './routes/Profile';
-import { UserContext } from './helpers/context';
-import AccessRestricted from './routes/AccessRestricted';
 import RequireAuth from './components/RequireAuth';
 import HeaderTagsSetter from './components/HeaderTagsSetter';
 import AdvancedOptions from './routes/AdvancedOptions';
@@ -72,10 +71,7 @@ const App = () => {
           </Route>
           <Route path="creditos" element={<Credits />} />
         </Route>
-        {/* <Route path="admin" element={<AdminLayout />} >
-        </Route> */}
         <Route path="*" element={<Layout showBreadcrumbs={false} />} >
-          <Route path="acceso-restringido" element={<AccessRestricted />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
